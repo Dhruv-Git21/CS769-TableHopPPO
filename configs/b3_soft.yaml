@@ -1,0 +1,18 @@
+base: base.yaml
+method: b3_soft
+device: cpu
+data:
+  dataset: hybridqa
+  processed_dir: data/processed
+answer_head:
+  path: results/answer_head_row  # R3 (row evidence)
+soft:
+  budget_examples: 48000   # matched budget unit (16 epochs over 3,000 train questions)
+  batch_size: 16
+  lr: 1.0e-3
+  weight_decay: 0.01
+  hidden: 256
+  dropout: 0.1
+  top_n: 3
+  eval_every_examples: 6000
+  eval_subset: 300

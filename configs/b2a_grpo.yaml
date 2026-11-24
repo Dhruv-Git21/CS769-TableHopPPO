@@ -1,0 +1,3 @@
+base: rl_base.yaml
+method: b2a_grpo
+reward: {terminal_only: true}

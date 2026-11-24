@@ -1,0 +1,3 @@
+base: rl_base.yaml
+method: a2_noredund
+reward: {no_redundancy: true}

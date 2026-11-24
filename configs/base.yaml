@@ -1,0 +1,48 @@
+device: auto
+seed: 0
+paths:
+  data_dir: data
+  cache_dir: data/cache
+  results_dir: results
+data: {}
+env:
+  K: 32                  # hop-0 candidates (and A4 whole-table candidates)
+  col_topk: 8            # same-column candidates kept per hop (by cosine)
+  max_hops: 4
+  unrestricted: false    # A4: hop t>0 candidates = top-K cells of whole table
+  bm25_weight: 0.5       # hop-0 score = w*bm25_norm + (1-w)*cosine
+  encoder: BAAI/bge-small-en-v1.5
+  embed_batch: 64
+  embed_max_len: 160     # tokens; rendered texts are <= ~450 chars
+reward:
+  w_ans: 1.0
+  w_hop: 0.2
+  w_red: 0.1
+  w_schema: 0.05
+  w_step: 0.02
+  w_stop: 0.0
+  w_path: 0.2            # used only with path_f1_terminal
+  terminal_only: false
+  no_redundancy: false
+  no_schema: false
+  no_step: false
+  path_f1_terminal: false
+  # question cue -> expected dtype of the last selected cell (checked on TRAIN-independent fixed list)
+  schema_cues:
+    number: [how many, number of, how much, percent, percentage, total, average]
+    date: [what year, which year, in what year, when, what date, year]
+ppo:
+  gamma: 1.0
+  gae_lambda: 0.95
+  clip_eps: 0.2
+  value_coef: 0.5
+  entropy_coef: 0.01
+  epochs: 4
+  grad_clip: 0.5
+  lr_head: 3.0e-4
+  lr_backbone: 1.0e-5
+  rollout_batch: 64
+grpo:
+  group_size: 8
+model: {}
+answer_head: {}

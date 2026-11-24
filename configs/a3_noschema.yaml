@@ -1,0 +1,3 @@
+base: rl_base.yaml
+method: a3_noschema
+reward: {no_schema: true}

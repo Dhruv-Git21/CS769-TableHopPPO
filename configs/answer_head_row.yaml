@@ -1,0 +1,5 @@
+# R3 (2026-11-23): answer head that reads each selected cell's whole row (render.py evidence mode "row").
+base: answer_head.yaml
+answer_head:
+  out_dir: results/answer_head_row
+  evidence: row

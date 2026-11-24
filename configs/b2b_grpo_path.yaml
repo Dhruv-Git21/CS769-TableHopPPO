@@ -1,0 +1,3 @@
+base: rl_base.yaml
+method: b2b_grpo_path
+reward: {terminal_only: true, path_f1_terminal: true, w_path: 0.2}

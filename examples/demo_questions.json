@@ -1,0 +1,11 @@
+{
+  "_note": "Follow-up questions written by the team for the live demo, about the tables of curated dev examples. Expected answers were read off the table/passage by hand; they are not part of any reported metric.",
+  "hqa:train:01a3c53762efb8ef": [
+    {"q": "Which company manufactured the longest inverted roller coaster in the world ?", "expected": "Bolliger & Mabillard"},
+    {"q": "In what year did the longest inverted roller coaster in the world open ?", "expected": "2014"}
+  ],
+  "hqa:train:029c209ea2dfc169": [
+    {"q": "In which city did the gymnast who finished 8th at the 2001 World Artistic Gymnastics Championships floor exercise die ?", "expected": "Kiev"},
+    {"q": "At which Olympic Games did the gymnast who finished 8th at the 2001 World Artistic Gymnastics Championships win a medal ?", "expected": "2000 Sydney Games"}
+  ]
+}

@@ -1,0 +1,3 @@
+base: rl_base.yaml
+method: a1_terminal
+reward: {terminal_only: true}

@@ -1,0 +1,8 @@
+base: base.yaml
+method: m0
+device: mps
+data:
+  dataset: hybridqa
+  processed_dir: data/processed
+answer_head:
+  path: results/answer_head_row  # R3 (row evidence)

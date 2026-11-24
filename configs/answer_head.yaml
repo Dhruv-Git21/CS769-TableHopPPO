@@ -1,0 +1,19 @@
+base: base.yaml
+device: mps
+data:
+  dataset: hybridqa
+  processed_dir: data/processed
+answer_head:
+  model: google/flan-t5-small
+  out_dir: results/answer_head
+  epochs: 3
+  lr: 3.0e-4
+  batch_size: 16
+  micro_batch: 4
+  max_len: 512
+  max_new_tokens: 32
+  distractor_p: 0.3      # prob. of adding distractors to a training example
+  distractor_max: 2      # then 1..2 random distractor entities
+  patience: 1            # early stop on dev F1 (best epoch is kept)
+  eval_batch_size: 32
+  seed: 0

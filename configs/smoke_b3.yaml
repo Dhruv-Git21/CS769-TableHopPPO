@@ -1,0 +1,11 @@
+base: b3_soft.yaml
+paths:
+  results_dir: results/smoke
+  cache_dir: results/smoke/cache
+data:
+  dataset: synthetic
+  synthetic_n: {train: 32, dev: 16, test: 16, ood_dev: 8, ood_test: 8}
+soft:
+  budget_examples: 256
+  eval_every_examples: 128
+  eval_subset: 8

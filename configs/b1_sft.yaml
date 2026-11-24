@@ -1,0 +1,18 @@
+base: base.yaml
+method: b1_sft
+device: mps
+data:
+  dataset: hybridqa
+  processed_dir: data/processed
+sft:
+  model: google/flan-t5-small
+  budget_examples: 48000   # = 16 epochs over the 3,000 train questions (matched budget unit)
+  batch_size: 16
+  micro_batch: 4
+  lr: 3.0e-4
+  max_len: 512
+  max_new_tokens: 32
+  passage_chars: 200
+  eval_every_examples: 12000
+  eval_subset: 300
+  eval_batch_size: 32

@@ -1,0 +1,11 @@
+base: rl_base.yaml
+method: b2a_grpo
+device: cpu
+paths: {results_dir: results/smoke}
+data:
+  dataset: synthetic
+  synthetic_n: {train: 2000, dev: 200, test: 50, ood_dev: 20, ood_test: 20}
+answer_head: {type: stub_synthetic}
+reward: {terminal_only: true}
+rl: {budget_trajectories: 48000, eval_every: 50, eval_subset: 200}
+ppo: {lr_head: 1.0e-3}   # synthetic sanity only (small net, 48k trajectories)

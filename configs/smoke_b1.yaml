@@ -1,0 +1,20 @@
+base: base.yaml
+method: b1_sft
+device: cpu
+paths:
+  results_dir: results/smoke
+data:
+  dataset: synthetic
+  synthetic_n: {train: 32, dev: 16, test: 16, ood_dev: 8, ood_test: 8}
+sft:
+  model: google/flan-t5-small
+  budget_examples: 64
+  batch_size: 8
+  micro_batch: 4
+  lr: 3.0e-4
+  max_len: 192
+  max_new_tokens: 16
+  passage_chars: 100
+  eval_every_examples: 32
+  eval_subset: 8
+  eval_batch_size: 8
