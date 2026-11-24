@@ -1,0 +1,37 @@
+{
+  "em": 0.955,
+  "f1": 0.955,
+  "path_validity_strict": 0.78125,
+  "path_validity_loose": 1.0,
+  "gold_f1": 0.6877380952380951,
+  "gold_lcs": 0.7516666666666667,
+  "hop_efficiency": 0.78125,
+  "mean_hops": 2.68,
+  "n": 200,
+  "n_with_gold_path": 200,
+  "run_id": "h1_hoppo_synthetic_s0_20261123-021128",
+  "method": "h1_hoppo",
+  "split": "dev",
+  "eval_time_s": 2.1606359481811523,
+  "env_lock_sha256": "e978ef9ce1492347b3b64a2abaa80ba39a38963485e4d81290f321d863eb77e0",
+  "answer_head_sha256": "stub_synthetic",
+  "hop_validity_by_index": {
+    "0": 0.945,
+    "1": 0.44274809160305345,
+    "2": 0.4961832061068702,
+    "3": 1.0
+  },
+  "hop_count_by_index": {
+    "0": 200,
+    "1": 131,
+    "2": 131,
+    "3": 74
+  },
+  "reward_components_mean": {
+    "hop": 0.386,
+    "red": 0.0,
+    "schema": 0.0,
+    "step": -0.0536,
+    "terminal": 0.955
+  }
+}

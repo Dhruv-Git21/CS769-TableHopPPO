@@ -1,0 +1,24 @@
+\section*{Limitations}
+\label{sec:limitations}
+
+\paragraph{Scale and backbones.}
+All experiments run on one laptop with compute tier S: a frozen \texttt{bge-small-en-v1.5} encoder, a frozen \texttt{flan-t5-small} answer head and a policy of about 0.3M parameters, trained on 3{,}000 questions with a 48{,}000-trajectory budget.
+Absolute accuracy is therefore far below published HybridQA systems, which use much larger models, and our numbers are not comparable to them.
+Nothing here shows how hop-level credit behaves for large language models, and we use a single backbone family.
+
+\paragraph{Noisy gold paths.}
+HybridQA has no annotated hop order. Our gold paths are heuristics built from a weak answer-node label, none is verified as clean, and the hop reward and path metrics inherit this noise.
+A high strict validity means agreement with the heuristic, not necessarily correctness of reasoning.
+
+\paragraph{Evidence from few runs and tuning.}
+We use three seeds, a three-trial tuning grid per method (fewer than the six originally planned) and tune on seed 0 only, so seed variance is only partly captured and hyperparameter differences between methods may remain.
+The reward weights are fixed and not tuned, and the row-evidence and feature changes were designed on development data after a first run performed poorly; all discarded runs are excluded and described in Appendix~\ref{app:changes}.
+
+\paragraph{Benchmarks and OOD.}
+We evaluate on HybridQA only. The OOD split holds out three table clusters within the same dataset and is not a cross-dataset test.
+MultiHiertt, TAT-QA and FinQA were not run (Appendix~\ref{app:cut}).
+Candidate generation caps accuracy: the gold first entity is not always among the $K=32$ hop-0 candidates.
+
+\paragraph{Claims.}
+Hypotheses whose status in the claims ledger is not ``supported'' are reported as such.
+Unsupported or inconclusive hypotheses: H1 (less error propagation than trace-level RL) is inconclusive because the EM difference to answer-only GRPO has an interval that includes zero; H1c (the dense reward matters) is not supported, since the terminal-only variant is more accurate; H2 is only partially supported because strict validity is low; H3 (OOD robustness) is reported only when the held-out-cluster evaluation is complete.

@@ -1,0 +1,24 @@
+\section{Conclusion}
+\label{sec:conclusion}
+
+\begin{table}[t]
+\centering\small
+\begin{tabular}{p{0.12\columnwidth}p{0.48\columnwidth}p{0.26\columnwidth}}
+\toprule
+ID & Hypothesis & Status (\splitname) \\
+\midrule
+H1 & hop-level credit beats trace-level RL & inconclusive \\
+H1b & not only extra supervision (vs B2b) & supported in direction \\
+H1c & dense reward matters (vs A1) & not supported \\
+H2 & paths are valid and auditable & partially supported \\
+H3 & smaller ID$\rightarrow$OOD gap & not assessed yet \\
+\bottomrule
+\end{tabular}
+\caption{Hypothesis status, following the criteria of Section~\ref{sec:setup} (\R{SeedsHOneHoppo} seed(s) per method in this build).}
+\label{tab:claims}
+\end{table}
+
+We studied whether hop-level credit helps multi-hop table question answering by casting each hop as a discrete entity-selection action trained with PPO, in an environment where encoder, candidates and answer head are shared across methods and budgets are matched.
+Hop-level credit made the policy's paths shorter and more often on the gold path, and it beat trace-level RL given the same path signal only at the end (H1b supported in direction). It did not improve accuracy over an answer-only reward (H1c not supported), its advantage over answer-only trace-level RL is not reliable (H1 inconclusive), and full-table SFT remains the most accurate method in this regime. Path validity stays low in absolute terms (H2 partially supported), and most errors start at the first hop.
+Our setting is small (frozen small backbones, 3{,}000 training questions, heuristic gold paths), so the conclusions apply to this regime.
+Natural next steps are a trained rather than heuristic path signal, larger backbones, and additional benchmarks (Appendix~\ref{app:cut}).

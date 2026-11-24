@@ -1,0 +1,257 @@
+{
+  "h1_run": "h1_hoppo_hybridqa_s0_20261123-051021",
+  "b1_run": "b1_sft_hybridqa_s0_20261123-024831",
+  "split": "dev",
+  "counts": {
+    "h1_wins": 51,
+    "both_right": 55,
+    "h1_fails": 500
+  },
+  "n_dev": 1000,
+  "h1_wins": [
+    {
+      "id": "hqa:train:01a3c53762efb8ef",
+      "question": "Which ride is the longest inverted roller coaster in the world ?",
+      "gold": [
+        "Banshee"
+      ],
+      "h1_pred": "Banshee",
+      "b1_pred": "Thunder Alley and Son of Beast",
+      "m0_pred": "Banshee"
+    },
+    {
+      "id": "hqa:train:029b0529df4943ed",
+      "question": "At which venue did the 6-time Indonesia Open champion compete ?",
+      "gold": [
+        "Gangseo Gymnasium"
+      ],
+      "h1_pred": "Gangseo Gymnasium",
+      "b1_pred": "Busan Citizens ' Hall",
+      "m0_pred": "Gangseo Gymnasium"
+    },
+    {
+      "id": "hqa:train:029c209ea2dfc169",
+      "question": "Who was the coach of the gymnast who finished 8th at the 2001 World Artistic Gymnastics Championships floor exercise ?",
+      "gold": [
+        "Igor Korobchinsky"
+      ],
+      "h1_pred": "Igor Korobchinsky",
+      "b1_pred": "Kevin Harmse",
+      "m0_pred": "Igor Korobchinsky"
+    },
+    {
+      "id": "hqa:train:0640424e8ab9d3be",
+      "question": "Which player plays for the team that qualified for their first playoff appearance in 1984 ?",
+      "gold": [
+        "Andre Owens"
+      ],
+      "h1_pred": "Andre Owens",
+      "b1_pred": "Jeremy Richardson",
+      "m0_pred": "Andre Owens"
+    },
+    {
+      "id": "hqa:train:0742e9b018c6bdc5",
+      "question": "What is the Federal subject of the team founded under the name NK Enotnost ?",
+      "gold": [
+        "SR Slovenia"
+      ],
+      "h1_pred": "SR Slovenia",
+      "b1_pred": "SR Croatia",
+      "m0_pred": "SR Slovenia"
+    },
+    {
+      "id": "hqa:train:0f3d78c37c0daa7d",
+      "question": "What is the team nickname of the college that won the 1976 Metro Conference Men 's Basketball Tournament ?",
+      "gold": [
+        "Bearcats"
+      ],
+      "h1_pred": "Bearcats",
+      "b1_pred": "The Eagles",
+      "m0_pred": "Bearcats"
+    },
+    {
+      "id": "hqa:train:0fdb92eb4665eb2c",
+      "question": "When was the club who the head coach of Bristol between February 2009 and May 2011 played for founded ?",
+      "gold": [
+        "1888"
+      ],
+      "h1_pred": "1888",
+      "b1_pred": "1927",
+      "m0_pred": "1888"
+    },
+    {
+      "id": "hqa:train:10d2fce2ec243da9",
+      "question": "What was the population as of 2017 for the city that is home to the football club FK Nevėžis Kėdainiai ?",
+      "gold": [
+        "24,093"
+      ],
+      "h1_pred": "24,093",
+      "b1_pred": "30,000",
+      "m0_pred": "24,093"
+    }
+  ],
+  "both_right": [
+    {
+      "id": "hqa:train:06a1355dc75644f0",
+      "question": "What ship was owned by a Canadian and U.S. Class II 3 ft ( 914 mm ) narrow-gauge railroad linking the port of Skagway , Alaska , with Whitehorse , the capital of Yukon ?",
+      "gold": [
+        "Casca"
+      ],
+      "h1_pred": "Casca",
+      "b1_pred": "Casca",
+      "m0_pred": "Casca"
+    },
+    {
+      "id": "hqa:train:0ad93737e1900eda",
+      "question": "What style of cooking is mastered by the chef of Maison Lameloise ?",
+      "gold": [
+        "French"
+      ],
+      "h1_pred": "French",
+      "b1_pred": "French",
+      "m0_pred": "French"
+    },
+    {
+      "id": "hqa:train:137e1a01dcad7e19",
+      "question": "Who was the best dancer of the dance style that originated in the United States from African-Americans in the early 1930s ?",
+      "gold": [
+        "Fei"
+      ],
+      "h1_pred": "Fei",
+      "b1_pred": "Fei",
+      "m0_pred": "Lee Jong-won"
+    },
+    {
+      "id": "hqa:train:1391cf9b488a66d2",
+      "question": "What is the Last title ( 4th tier ) of the team that is currently managed by Mark Wilson ?",
+      "gold": [
+        "2001-02"
+      ],
+      "h1_pred": "2001-02",
+      "b1_pred": "2001-02",
+      "m0_pred": "2001-02"
+    },
+    {
+      "id": "hqa:train:17e221d724d0ee43",
+      "question": "What is the spoofed title of a TV show that ran from 1967 to 1975 on CBS ?",
+      "gold": [
+        "Manic"
+      ],
+      "h1_pred": "Manic",
+      "b1_pred": "Manic",
+      "m0_pred": "Manic"
+    },
+    {
+      "id": "hqa:train:19077cd1f0394d05",
+      "question": "What is the song whose composer is the music alias of Indian music director duo of brothers Ajay and Atul Gogavale ?",
+      "gold": [
+        "Prabhatgeet"
+      ],
+      "h1_pred": "Prabhatgeet",
+      "b1_pred": "Prabhatgeet",
+      "m0_pred": "Prabhatgeet"
+    },
+    {
+      "id": "hqa:train:235e44c703ba5a90",
+      "question": "Where was the kit maker of Kaya established ?",
+      "gold": [
+        "Osaka"
+      ],
+      "h1_pred": "Osaka",
+      "b1_pred": "Osaka",
+      "m0_pred": "Osaka"
+    },
+    {
+      "id": "hqa:train:24b2d708d00c929f",
+      "question": "The population of the town where the James and Cunningham Daniel House is located was what in 2000 ?",
+      "gold": [
+        "139"
+      ],
+      "h1_pred": "139",
+      "b1_pred": "139",
+      "m0_pred": "139"
+    }
+  ],
+  "h1_fails": [
+    {
+      "id": "hqa:train:00c4ec00287eb685",
+      "question": "What is the name of the serial whose channel is based in New Delhi ?",
+      "gold": [
+        "Neem Neem Shahad Shahad"
+      ],
+      "h1_pred": "Haar Jeet",
+      "b1_pred": "Neem Neem Shahad Shahad",
+      "m0_pred": "Neem Neem Shahad Shahad"
+    },
+    {
+      "id": "hqa:train:00e2cad3be80c37b",
+      "question": "What city was the first winner of the year for the 2005 UCI Women 's Road World Cup born in ?",
+      "gold": [
+        "Sutherland"
+      ],
+      "h1_pred": "Belgium",
+      "b1_pred": "Cottbus",
+      "m0_pred": "Sutherland"
+    },
+    {
+      "id": "hqa:train:012571e41131863b",
+      "question": "River Phoenix played Brian in a sitcom that aired on what network ?",
+      "gold": [
+        "NBC"
+      ],
+      "h1_pred": "ABC Afterschool Special",
+      "b1_pred": "ABC",
+      "m0_pred": "NBC"
+    },
+    {
+      "id": "hqa:train:012ee96755fdb85e",
+      "question": "Which draft year was Elvin Hayes chosen by the team that was NBA Midwest Division champion three times ?",
+      "gold": [
+        "1968"
+      ],
+      "h1_pred": "1993-94",
+      "b1_pred": "2011",
+      "m0_pred": "1968"
+    },
+    {
+      "id": "hqa:train:01a679cb169c99bf",
+      "question": "What is the primary home ground of the team whose overseas player was born on 7 May 1980 ?",
+      "gold": [
+        "Edgbaston , Birmingham"
+      ],
+      "h1_pred": "The Oval , London",
+      "b1_pred": "Edgbaston , Birmingham",
+      "m0_pred": "Edgbaston , Birmingham"
+    },
+    {
+      "id": "hqa:train:03b2b526adb61d10",
+      "question": "What is the name of the aircraft that was an amphibious flying boat and only 58 were built ?",
+      "gold": [
+        "Douglas Dolphin"
+      ],
+      "h1_pred": "Latécoère 631",
+      "b1_pred": "Douglas Dolphin",
+      "m0_pred": "Douglas Dolphin"
+    },
+    {
+      "id": "hqa:train:03b4d4208a70c7d5",
+      "question": "The director of this film about two teens who encounter a real dragon graduated from where with a degree in Psychology ?",
+      "gold": [
+        "Flinders University"
+      ],
+      "h1_pred": "Australian",
+      "b1_pred": "Flinders University",
+      "m0_pred": "Flinders University"
+    },
+    {
+      "id": "hqa:train:04fd7172a4612894",
+      "question": "What river borders the southwest of the state which held the 2005 BMW Charity Pro-Am at The Cliffs ?",
+      "gold": [
+        "Savannah River"
+      ],
+      "h1_pred": "South Carolina",
+      "b1_pred": "Savannah",
+      "m0_pred": "Savannah River"
+    }
+  ]
+}

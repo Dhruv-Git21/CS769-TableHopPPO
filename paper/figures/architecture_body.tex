@@ -1,0 +1,94 @@
+% TableHop-PPO architecture (TikZ). Included by paper/sections/method.tex and by architecture.tex (standalone).
+% Notation follows the paper: q question, T table, P passages, C_t candidates, e_t selected entity,
+% h_t policy state, f_i candidate features, r_t hop reward, r_T terminal reward, \hat a answer, a^* gold answer.
+\begin{tikzpicture}[
+  x=1cm, y=1cm, font=\sffamily\scriptsize,
+  trainbox/.style={draw=tOrange, line width=0.9pt, fill=tOrangeL, rounded corners=3pt, align=center, inner sep=3pt},
+  frozenbox/.style={draw=tTeal, line width=0.9pt, fill=tTealL, rounded corners=3pt, align=center, inner sep=3pt},
+  plainbox/.style={draw=tGrey, line width=0.6pt, fill=white, rounded corners=3pt, align=center, inner sep=3pt},
+  panel/.style={draw=tGrey!55, line width=0.5pt, rounded corners=5pt, fill=tPanel},
+  arr/.style={-{Stealth[length=2.0mm, width=1.7mm]}, line width=0.85pt, draw=tNavy},
+  garr/.style={-{Stealth[length=2.0mm, width=1.7mm]}, line width=0.85pt, draw=tOrange, dashed},
+  lab/.style={font=\sffamily\tiny, text=tNavy},
+  ptitle/.style={font=\sffamily\bfseries\footnotesize, text=tNavy, anchor=west},
+  cell/.style={draw=tGrey!70, line width=0.4pt, minimum height=0.40cm, inner sep=1pt, font=\sffamily\tiny, anchor=west},
+  hopno/.style={circle, fill=tOrange, text=white, font=\sffamily\bfseries\tiny, inner sep=0.5pt, minimum size=3.2mm},
+]
+\newcommand{\ind}{\mathbf{1}}
+% ------------------------------------------------------------------ panels
+\draw[panel] (-0.15,0.95) rectangle (4.45,7.75);
+\draw[panel] (4.75,0.95) rectangle (11.85,7.75);
+\draw[panel] (12.15,0.95) rectangle (16.35,7.75);
+\node[ptitle] at (-0.05,7.47) {(a) Input};
+\node[ptitle] at (4.85,7.47) {(b) Hop-level policy, trained with PPO};
+\node[ptitle] at (12.25,7.47) {(c) Frozen answer head};
+
+% ------------------------------------------------------------------ (a) input
+\node[plainbox, text width=4.15cm, anchor=north west, align=left] (q) at (0.0,7.15)
+  {\textbf{Question} $q$\\\emph{Who was the coach of the gymnast who finished 8th at the 2001 World Championships (floor)?}};
+\node[lab, anchor=west, font=\sffamily\scriptsize\bfseries] at (0.0,5.55) {Table $T$};
+\foreach \r/\a/\b/\c in {0/Rank/Gymnast/Total, 1/6/Alexei Bondarenko/8.937, 2/7/Yernar Yerimbetov/8.712, 3/8/Alexander Beresh/7.862}{
+  \pgfmathsetmacro{\yy}{5.18-0.40*\r}
+  \ifnum\r=0
+    \node[cell, minimum width=0.7cm, fill=tNavy, text=white] at (0.0,\yy) {\a};
+    \node[cell, minimum width=2.45cm, fill=tNavy, text=white] at (0.7,\yy) {\b};
+    \node[cell, minimum width=1.0cm, fill=tNavy, text=white] at (3.15,\yy) {\c};
+  \else
+    \node[cell, minimum width=0.7cm, fill=white] at (0.0,\yy) {\a};
+    \node[cell, minimum width=2.45cm, fill=white, text=tTeal] at (0.7,\yy) {\underline{\b}};
+    \node[cell, minimum width=1.0cm, fill=white] at (3.15,\yy) {\c};
+  \fi
+}
+\node[cell, minimum width=2.45cm, fill=tOrangeL, draw=tOrange, line width=0.9pt, text=tTeal] (sel) at (0.7,3.98) {\underline{Alexander Beresh}};
+\node[hopno] at (2.95,3.98) {1};
+\node[lab, anchor=west, text=tGrey] at (2.1,3.48) {underlined = has a link};
+\node[plainbox, text width=4.15cm, anchor=north west, draw=tOrange, line width=0.9pt, align=left] (pass) at (0.0,3.12)
+  {\textbf{Passage} $p \in P$\\\emph{Alexander Beresh \dots\ was a gymnast from Ukraine \dots\ coached by \textbf{Igor Korobchinsky} \dots}};
+\node[hopno] at (4.0,2.96) {2};
+\draw[arr, draw=tTeal, dashed] (1.95,3.78) -- node[lab, left, text=tTeal] {link} (1.95,3.14);
+
+% ------------------------------------------------------------------ (b) policy loop
+\node[frozenbox, text width=2.6cm] (enc) at (6.45,6.6) {\textbf{Text encoder}\\bge-small, \emph{frozen}};
+\node[plainbox, text width=2.6cm, minimum height=2.05cm] (cand) at (6.45,4.45)
+  {\textbf{Candidates} $\mathcal{C}_t$\\[2pt]$t{=}0$: top-32 cells\\by BM25 + cosine\\[2pt]$t{>}0$: same row, same\\column, link, \textsc{stop}};
+\node[trainbox, text width=3.45cm, minimum height=2.05cm] (pol) at (9.95,4.45)
+  {\textbf{Policy} $\pi_\theta$ ($\approx$0.3M params)\\[2pt]
+   $h_t=\mathrm{GRU}(h_{t-1},\mathbf{e}_{t-1})$\\[1pt]
+   $s_i=(Wh_t)^{\!\top}\mathbf{c}_i+\mathbf{u}^{\!\top}\mathbf{r}_{\mathrm{rel}(i)}$\\
+   $\;+\,\beta\cos(q,c_i)+\mathbf{v}^{\!\top}f_i$\\[1pt]
+   masked softmax over $\mathcal{C}_t$};
+\node[plainbox, text width=4.0cm, minimum height=1.05cm] (env) at (9.45,2.0)
+  {\textbf{Environment}: move to $e_t$, extend $\tau$\\[1pt]
+   $r_t{=}0.2\,\ind[\text{gold}]{-}0.1\,\ind[\text{revisit}]{-}0.02$};
+\draw[arr] (enc) -- node[lab, right] {embeddings $\mathbf{c}_i$, $q$} (cand);
+\draw[arr] (cand) -- (pol);
+\draw[arr] (pol.south -| 9.45,0) -- node[lab, right] {$e_t \sim \pi_\theta$} (env.north);
+\draw[arr] (env.west) -| node[lab, left, pos=0.8, align=right] {$\mathcal{C}_{t+1}$ from $e_t$} (cand.south);
+\node[lab, text=tGrey, anchor=west] at (5.0,1.25) {loop until \textsc{stop} or 4 hops};
+
+% ------------------------------------------------------------------ (c) answer head
+\node[plainbox, text width=3.6cm, minimum height=1.35cm] (evid) at (14.25,6.15)
+  {\textbf{Evidence} $\tau$\\[1pt]full row of each selected cell\\+ each selected passage\\(nothing else is read)};
+\node[frozenbox, text width=3.6cm] (head) at (14.25,4.45) {\textbf{Answer head} $f$\\flan-T5-small, \emph{frozen}};
+\node[trainbox, fill=white, text width=3.6cm] (ans) at (14.25,3.15) {$\hat a=f(q,\tau)$:\; \textbf{Igor Korobchinsky}};
+\node[lab, text width=3.7cm, align=center] (rT) at (14.25,1.9) {terminal reward\\$r_T=\mathrm{F1}(\hat a,a^\ast)-0.05\,\ind[\text{type}]$};
+\draw[arr] (pol.east) -- ++(0.3,0) |- node[lab, above, pos=0.78] {\textsc{stop}} (evid.west);
+\draw[arr] (evid) -- (head);
+\draw[arr] (head) -- (ans);
+\draw[arr] (ans) -- (rT);
+
+% ------------------------------------------------------------------ PPO band
+\node[trainbox, text width=11.25cm, minimum height=0.55cm] (ppo) at (10.55,0.35)
+  {\textbf{PPO update of $\pi_\theta$ only:} GAE advantages $\hat A_t$ from $r_0,\dots,r_{T-1}$ and $r_T$; clipped objective (Eq.~4)};
+\draw[arr] (env.south) -- (env.south |- ppo.north);
+\draw[arr] (rT.south) -- (rT.south |- ppo.north);
+\draw[garr] (11.72,0.63) -- (11.72,3.42) node[lab, right, text=tOrange, pos=0.55] {$\nabla_\theta$};
+
+% ------------------------------------------------------------------ legend (under panel a)
+\node[trainbox, minimum width=0.45cm, minimum height=0.28cm, inner sep=0pt] at (0.15,0.35) {};
+\node[lab, anchor=west] at (0.45,0.35) {trained};
+\node[frozenbox, minimum width=0.45cm, minimum height=0.28cm, inner sep=0pt] at (1.55,0.35) {};
+\node[lab, anchor=west] at (1.85,0.35) {frozen};
+\node[hopno] at (2.95,0.35) {1};
+\node[lab, anchor=west] at (3.15,0.35) {hop order};
+\end{tikzpicture}

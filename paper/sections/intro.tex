@@ -1,0 +1,23 @@
+\section{Introduction}
+\label{sec:intro}
+
+Many questions over semi-structured data cannot be answered from a single cell.
+In HybridQA \citep{chen2020hybridqa}, for example, a question may require locating a row through one cell, following a hyperlink from that cell to a passage, and reading the answer there.
+Methods that treat table question answering as sequence generation or cell classification \citep{herzig2020tapas,liu2022tapex,zhang2024tablellama} do not expose these intermediate decisions, and recent reinforcement learning (RL) recipes for tables assign one verifiable reward to an entire response \citep{yang2025tabler1,lei2025reasoningtable}.
+When a trace has several lookups and only the final answer is scored, a correct first lookup followed by a wrong second lookup receives the same signal as two wrong lookups.
+This credit-assignment problem is well studied in RL \citep{ng1999shaping,arjona2019rudder} and in knowledge-graph path reasoning, where shaped rewards help an agent that walks entity by entity \citep{xiong2017deeppath,das2018minerva,lin2018multihop}.
+It has received less attention for tables.
+
+We ask a deliberately empirical question: \emph{when does hop-level credit help multi-hop table reasoning?}
+We formulate each hop as a discrete choice among a small set of candidate entities (cells, linked passages, STOP), train the choice policy with PPO \citep{schulman2017ppo} using a hybrid reward with hop-level and terminal parts, and let a frozen answer head produce the answer from the selected evidence.
+Because a hop-level reward uses gold-path labels, a fair comparison must separate the effect of credit assignment from the effect of extra supervision.
+We therefore include a trace-level RL baseline that also receives path supervision, but only at the end of the trace, in addition to a standard answer-only trace-level baseline.
+
+Our contributions are as follows.
+\begin{itemize}\setlength\itemsep{0pt}
+  \item A controlled environment for multi-hop table QA in which the action space, encoder, candidate generator and answer head are identical for all path-based methods, so that only the learning signal differs (Sections~\ref{sec:formulation}--\ref{sec:method}).
+  \item A comparison under matched rollout budget (48{,}000 trajectories) and matched tuning budget against SFT, trace-level GRPO-style RL with and without gold-path supervision, and a soft selector, plus reward ablations and an out-of-domain split built from held-out table clusters (Section~\ref{sec:setup}).
+  \item An analysis of accuracy, path validity and hop efficiency with bootstrap confidence intervals, together with the negative results and limitations of a small-scale, noisy-label setting (Sections~\ref{sec:results}--\ref{sec:limitations}).
+\end{itemize}
+In short, hop-level credit made the policy's paths shorter and more often correct, and it beat trace-level RL that receives the same path signal only at the end; it did not make answers more accurate than an answer-only reward, and no path-based method approached full-table SFT at our scale (Section~\ref{sec:results}; hypothesis status in Table~\ref{tab:claims}).
+Our code and data processing scripts are available at \codelink.

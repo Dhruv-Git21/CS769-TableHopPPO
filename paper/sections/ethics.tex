@@ -1,0 +1,20 @@
+\section*{Ethical Considerations}
+\label{sec:ethics}
+
+\paragraph{Data and licenses.}
+We use HybridQA \citep{chen2020hybridqa}, which is built on Wikipedia tables and passages and released by its authors for research; we use only the official train and dev files, and we do not open the official test file. The HybridQA repository is released under the MIT license; its tables and passages are crawled from Wikipedia. The encoder \texttt{BAAI/bge-small-en-v1.5} is MIT-licensed and \texttt{google/flan-t5-small} is Apache-2.0 licensed (model cards, accessed 2026-11-24).
+We introduce no new human-annotated data.
+
+\paragraph{Risks.}
+The system is a research prototype for question answering over encyclopedic tables.
+Its accuracy is low in absolute terms (Section~\ref{sec:results}), and a selected evidence path is an explanation of what the model read, not a guarantee that the answer is correct; it should not be used for decisions with consequences.
+Wikipedia content can carry biases and errors that the models may reproduce. We did not evaluate fairness or toxicity.
+
+\paragraph{Compute and environment.}
+Experiments were run on one laptop; the compute described in Section~\ref{sec:setup} and Appendix~\ref{app:hp} is small, which also limits energy use.
+
+\paragraph{AI assistance.}
+\tbc{disclose use of AI coding and writing assistants per the Responsible NLP checklist (item E), and describe what the authors verified.}
+
+\paragraph{Reproducibility.}
+Splits (with checksums), configurations, seeds and per-run metadata are released with the code; see Appendix~\ref{app:repro}.

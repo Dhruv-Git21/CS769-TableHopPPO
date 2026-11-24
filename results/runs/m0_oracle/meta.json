@@ -1,0 +1,1 @@
+{"run_id": "m0_oracle", "method": "m0", "seed": 0, "status": "done", "config": {"exp": "m0"}, "note": "no training; frozen answer head on gold paths"}

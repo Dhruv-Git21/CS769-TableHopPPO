@@ -1,0 +1,23 @@
+\section{Related Work}
+\label{sec:related}
+
+\paragraph{Table reasoning.}
+Early neural table QA selects cells and an aggregation operator from weak supervision \citep{herzig2020tapas} or pretrains a sequence model to imitate a SQL executor \citep{liu2022tapex}.
+Instruction-tuned generalist models cover many table tasks \citep{zhang2024tablellama}.
+Prompting methods decompose evidence and questions \citep{ye2023dater}, call symbolic programs that may themselves invoke a language model \citep{cheng2023binder}, or evolve the table through a chain of operations \citep{wang2024chainoftable}.
+These approaches either give no learned signal for intermediate steps or operate on prompted language models; ours learns a small selection policy over explicit candidates.
+
+\paragraph{RL for tables and text-based credit assignment.}
+Table-R1 \citep{yang2025tabler1} applies RL with verifiable rewards to table tasks and obtains one reward per full response, and Reasoning-Table \citep{lei2025reasoningtable} studies outcome-based RL for table reasoning and text-to-SQL.
+Our trace-level baselines B2a and B2b mirror this outcome-reward setting inside our controlled environment; we do not reproduce these systems, which use much larger language models, and do not compare against their published numbers.
+In mathematical reasoning, process-level supervision has been compared with outcome-level supervision \citep{uesato2022process,lightman2023verify}; our hop reward plays the role of a process signal, but it is computed from heuristic gold paths rather than human step labels.
+
+\paragraph{RL for multi-hop reasoning on graphs.}
+DeepPath \citep{xiong2017deeppath} and MINERVA \citep{das2018minerva} frame knowledge-graph reasoning as walks driven by a learned policy, and reward shaping addresses sparse and misleading terminal signals in this setting \citep{lin2018multihop}.
+Later work continues this line for temporal and sparse knowledge graphs \citep{bai2024matpath,liu2025maskgr}.
+We port the entity-by-entity view to tables and linked text; we do not implement the multi-agent variants of these later works and cite them as related background only.
+
+\paragraph{Reward shaping and policy optimization.}
+Potential-based shaping preserves optimal policies \citep{ng1999shaping}, whereas our hybrid reward is not potential-based and can change the optimum; we test this through ablations rather than assume it helps.
+RUDDER decomposes delayed returns \citep{arjona2019rudder}.
+We optimize with PPO and generalized advantage estimation \citep{schulman2017ppo,schulman2016gae}, and our trace-level baselines use Group Relative Policy Optimization (GRPO), the PPO variant introduced by \citet{shao2024deepseekmath}, which replaces the value function with group-normalized returns.

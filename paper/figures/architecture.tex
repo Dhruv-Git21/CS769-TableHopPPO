@@ -1,0 +1,13 @@
+% Standalone build of the architecture figure: pdflatex architecture.tex -> architecture.pdf
+% PNG for slides/report: pdftoppm -r 300 -png -singlefile architecture.pdf architecture
+\documentclass[border=4pt]{standalone}
+\usepackage[T1]{fontenc}
+\usepackage{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage{amsmath,amssymb}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,calc}
+\input{architecture_colors}
+\begin{document}
+\input{architecture_body}
+\end{document}

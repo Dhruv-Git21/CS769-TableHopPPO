@@ -1,0 +1,18 @@
+{
+  "em": 0.603,
+  "f1": 0.6687707681207682,
+  "path_validity_strict": 1.0,
+  "path_validity_loose": 1.0,
+  "gold_f1": 1.0,
+  "gold_lcs": 1.0,
+  "hop_efficiency": 0.6103238866396761,
+  "mean_hops": 2.046,
+  "n": 1000,
+  "n_with_gold_path": 988,
+  "run_id": "m0_oracle",
+  "method": "m0",
+  "split": "dev",
+  "eval_time_s": 13.842957973480225,
+  "env_lock_sha256": "e978ef9ce1492347b3b64a2abaa80ba39a38963485e4d81290f321d863eb77e0",
+  "answer_head_sha256": "b1fad48ceb67e7624f11eb610b90b4af71588e392517c6c5d4967966939c15a4"
+}

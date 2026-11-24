@@ -1,0 +1,103 @@
+{
+  "trials": {
+    "h1_hoppo/t0": {
+      "overrides": [],
+      "run": "results/runs/h1_hoppo_hybridqa_s0_20261123-051021",
+      "dev": {
+        "em": 0.114,
+        "f1": 0.15473534243534243
+      }
+    },
+    "b2a_grpo/t0": {
+      "overrides": [],
+      "run": "results/runs/b2a_grpo_hybridqa_s0_20261123-064852",
+      "dev": {
+        "em": 0.101,
+        "f1": 0.1468947653223969
+      }
+    },
+    "b2b_grpo_path/t0": {
+      "overrides": [],
+      "run": "results/runs/b2b_grpo_path_hybridqa_s0_20261123-070500",
+      "dev": {
+        "em": 0.074,
+        "f1": 0.11377408702408702
+      }
+    },
+    "b3_soft/t0": {
+      "overrides": [],
+      "run": "results/runs/b3_soft_hybridqa_s0_20261123-071309",
+      "dev": {
+        "em": 0.139,
+        "f1": 0.18919322066822067
+      }
+    },
+    "b1_sft/t0": {
+      "overrides": [],
+      "run": "results/runs/b1_sft_hybridqa_s0_20261123-024831",
+      "dev": {
+        "em": 0.263,
+        "f1": 0.32210493117993116
+      }
+    },
+    "h1_hoppo/t1": {
+      "overrides": [
+        "ppo.lr_head=1.0e-3"
+      ],
+      "run": "results/runs/h1_hoppo_hybridqa_s0_20261124-180400",
+      "dev": {
+        "em": 0.081,
+        "f1": 0.12466286768786769
+      }
+    },
+    "h1_hoppo/t2": {
+      "overrides": [
+        "ppo.entropy_coef=0.03"
+      ],
+      "run": "results/runs/h1_hoppo_hybridqa_s0_20261124-183055",
+      "dev": {
+        "em": 0.099,
+        "f1": 0.14480200150726466
+      }
+    },
+    "b2a_grpo/t1": {
+      "overrides": [
+        "ppo.lr_head=1.0e-3"
+      ],
+      "run": "results/runs/b2a_grpo_hybridqa_s0_20261124-191011",
+      "dev": {
+        "em": 0.105,
+        "f1": 0.1454220593132358
+      }
+    },
+    "b2a_grpo/t2": {
+      "overrides": [
+        "ppo.entropy_coef=0.03"
+      ],
+      "run": "results/runs/b2a_grpo_hybridqa_s0_20261124-193900",
+      "dev": {
+        "em": 0.117,
+        "f1": 0.160632448837712
+      }
+    },
+    "b2b_grpo_path/t1": {
+      "overrides": [
+        "ppo.lr_head=1.0e-3"
+      ],
+      "run": "results/runs/b2b_grpo_path_hybridqa_s0_20261124-201122",
+      "dev": {
+        "em": 0.07,
+        "f1": 0.11163328805697226
+      }
+    }
+  },
+  "chosen": {},
+  "final": {},
+  "ablation_s0_default": {
+    "a1_terminal": "results/runs/a1_terminal_hybridqa_s0_20261123-071426",
+    "a2_noredund": "results/runs/a2_noredund_hybridqa_s0_20261123-072517",
+    "a3_noschema": "results/runs/a3_noschema_hybridqa_s0_20261123-074031",
+    "a4_unrestricted": "results/runs/a4_unrestricted_hybridqa_s0_20261123-080026"
+  },
+  "note": "t0 = spec-default seed-0 runs trained 2026-11-23 after R2/R3 (G4)."
+}

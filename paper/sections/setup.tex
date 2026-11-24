@@ -1,0 +1,74 @@
+\section{Experimental Setup}
+\label{sec:setup}
+
+\paragraph{Data and splits.}
+We use HybridQA \citep{chen2020hybridqa}, whose questions need a table and linked Wikipedia passages.
+The official test labels are never opened.
+We build five splits from the official train and dev files (Table~\ref{tab:splits}): \emph{train} (3{,}000 questions, a seeded subsample stratified by answer-node type) and \emph{dev} (1{,}000 questions; used for all tuning and model selection) from official train tables, with disjoint tables; \emph{test} from official-dev questions on tables absent from train and dev; and two out-of-domain (OOD) splits from \emph{held-out table clusters}.
+Tables are clustered with $k$-means ($k=20$, seed 0, fitted on train-table embeddings of title, section title and header with the same encoder); clusters 6, 16 and 19 are held out entirely.
+\emph{ood\_test} uses official-dev questions on held-out-cluster tables, and \emph{ood\_dev} (500 questions) is kept for diagnostics and never used for tuning.
+A leakage audit asserts disjoint table ids across all pairs of splits and disjoint clusters for the OOD splits.
+Test and ood\_test are evaluated once per final configuration.
+HybridQA has no annotated hop order, so gold paths are heuristic: we take the weak \texttt{answer-node} label, add the same-row anchor cell with the highest question overlap, and append the linked passage when the answer is in a passage.
+Questions without an answer node have no gold path ($1.7\%$ overall).
+No path is verified by hand; we report this noise in Section~\ref{sec:limitations} and Appendix~\ref{app:data}.
+
+\begin{table}[t]
+\centering\small
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+Split & Questions & Tables & Gold path (heur.) \\
+\midrule
+train & 3{,}000 & 2{,}564 & 2{,}972 \\
+dev & 1{,}000 & 844 & 988 \\
+test & 2{,}045 & 1{,}787 & 1{,}991 \\
+ood\_test & 569 & 498 & 547 \\
+ood\_dev & 500 & 429 & 495 \\
+\bottomrule
+\end{tabular}
+\caption{HybridQA splits used here. The last column counts questions with a heuristic gold path; the rest have none.}
+\label{tab:splits}
+\end{table}
+
+\paragraph{Methods.}
+All path-based methods use the same encoder, candidate generator, policy architecture (where a policy is trained) and frozen answer head.
+\textbf{M0} (oracle) feeds the answer head the gold-path evidence and bounds what path-based methods can reach.
+\textbf{B1} (SFT) fine-tunes \texttt{flan-t5-small} on the question and a BM25-ranked linearization of table rows with linked-passage snippets, without hops.
+\textbf{B2a} is trace-level GRPO-style RL: the same policy and action space, $G=8$ sampled trajectories per question, trajectory reward equal to answer F1, advantages normalized within each group and applied to every action, a clipped objective as in PPO and no value head.
+\textbf{B2b} is the supervision control: B2a with the trace-level reward $\mathrm{F1}(\hat a,a^\ast)+0.2\cdot\mathrm{F1}_{\text{set}}(\tau,g)$, which uses the gold path but only after the episode ends.
+\textbf{B3} is a differentiable soft selector: an MLP scores hop-0 candidates and their one-hop neighbours, is trained by marginal likelihood of candidates whose text contains the gold answer (no path labels), and at inference passes its top 3 candidates to the answer head.
+\textbf{H1} is \hop\ with the full hybrid reward.
+Ablations \textbf{A1}--\textbf{A4} are defined in Section~\ref{sec:method}.
+
+\paragraph{Matched budgets.}
+The budget unit is the number of (question, trajectory) rollouts processed during training: 48{,}000 for every RL method (GRPO counts $G$ per question: 8 questions $\times$ 8 samples per update), and 48{,}000 question passes (16 epochs over the 3{,}000 training questions) for B1 and B3.
+Tuning is also matched (Appendix~\ref{app:changes}): each trained method receives 3 trials on dev with seed 0 over a fixed grid (Appendix~\ref{app:hp}), and reward weights are not tuned; ablations inherit the setting chosen for H1.
+We report wall-clock cost in Appendix~\ref{app:hp}.
+The trials and the selected setting per method are listed in Table~\ref{tab:study} (Appendix~\ref{app:hp}); one RL run takes 15--40 minutes and one B1 run about 75 minutes on our laptop.
+
+\paragraph{Metrics.}
+\emph{EM} and token-level \emph{F1} use the HybridQA normalization (lowercase, no punctuation or articles), with the maximum over gold answers.
+Path metrics use only questions with a gold path.
+\emph{Strict path validity} is the fraction of selected hops that are legal, not redundant and on the gold path; \emph{loose validity} drops the gold-path condition.
+\emph{Gold-path agreement} is the set F1 between selected entities and the gold path, and an ordered variant (longest common subsequence divided by gold length).
+\emph{Hop efficiency} is $\min(1,|g|/n_{\text{hops}})$ if the answer is exactly correct, and $0$ otherwise.
+\emph{Mean hops} is the number of selected entities.
+B1 has no hops, so path metrics are not defined for it.
+
+\paragraph{Seeds and statistics.}
+Each final configuration is trained with 3 seeds.
+We report the mean and standard deviation over seeds, and a 95\% percentile bootstrap interval (10{,}000 resamples over questions) on pooled per-question correctness.
+Comparisons of H1 with each other method use a paired bootstrap over the same questions (difference in EM, 95\% interval, two-sided $p$).
+With three seeds we do not rely on seed-level tests, and we describe a difference as supported only when the criteria of the claims ledger are met.
+The ID$\rightarrow$OOD gap is $\mathrm{EM}_{\text{test}}-\mathrm{EM}_{\text{ood\_test}}$ (absolute) and that divided by $\mathrm{EM}_{\text{test}}$ (relative).
+The seeds column of Tables~\ref{tab:main} and~\ref{tab:ablations} gives the number of completed seeds per method (\R{SeedsHOneHoppo} for \hop\ in the current build); no completed run was dropped. Runs trained before the design changes of Appendix~\ref{app:changes} are excluded and archived.
+
+\paragraph{Compute and implementation.}
+All runs use compute tier S: one Apple M4 laptop (10 cores, 16\,GB unified memory), CPU for the policy and MPS for the frozen encoder and answer head, and no GPU.
+Backbones are small and frozen (bge-small encoder, flan-t5-small answer head); only a $\approx$0.3M-parameter policy (or, for B1, the flan-t5-small model) is trained.
+We make no claim about larger models.
+Configurations, seeds and the code version of every run are logged, and all tables and figures are generated from the run logs (Appendix~\ref{app:repro}).
+
+\paragraph{Synthetic sanity study.}
+A separate, clearly labelled study (E6) runs H1 on programmatically generated tables with exact gold paths and a rule-based answer head; it checks that the learning signal can be exploited without label noise and is never presented as a benchmark result.
+On synthetic tables \hop\ reaches \SanityEm\% EM and \SanityValid\% strict path validity, so the hop-level signal is learnable when gold paths are exact.

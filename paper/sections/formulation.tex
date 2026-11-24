@@ -1,0 +1,39 @@
+\section{Problem Formulation}
+\label{sec:formulation}
+
+An example consists of a question $q$, a table $T$ with $R$ rows and $C$ columns whose cells may carry hyperlinks to passages, and the set of linked passages $P$.
+Let $\mathcal{E}$ denote the entity set, consisting of the cells of $T$ and the passages in $P$.
+The answer is a string $a^\ast$.
+Gold answers are available only for training and evaluation; the agent observes neither $a^\ast$ nor any gold path at test time.
+
+We model answering as a finite-horizon, partially observable decision process $(\mathcal{S},\mathcal{A},\mathcal{O},\mathcal{T},r,H)$.
+The latent state $s_t$ contains the full example and the trace $\tau_t=(e_1,\dots,e_t)$ of entities selected so far.
+The observation $o_t$ contains $q$, an embedding of each selected entity, and the current candidate set $\mathcal{C}_t\subseteq\mathcal{E}\cup\{\textsc{stop}\}$ with relation types and features.
+The action $a_t\in\mathcal{C}_t$ selects the next entity or STOP.
+Transitions are deterministic: selecting an entity appends it to the trace and, unless $t+1=H$, recomputes the candidate set from the new entity (Section~\ref{sec:method}); the episode ends on STOP, on reaching $H$ hops (forced stop), or on an illegal action.
+At termination a frozen answer head $f$ maps $(q,\tau)$ to a predicted answer $\hat a=f(q,\tau)$.
+The reward is the sum of per-hop terms $r_t$ and a terminal term $r_T$ (Section~\ref{sec:method}).
+We optimize $\pi_\theta(a_t\mid o_t)$ to maximize expected return.
+Table~\ref{tab:notation} lists the notation.
+
+\begin{table}[t]
+\centering\small
+\begin{tabular}{@{}ll@{}}
+\toprule
+Symbol & Meaning \\
+\midrule
+$q$, $T$, $P$ & question, table, linked passages \\
+$\mathcal{E}$ & entities: cells and passages \\
+$H$ & maximum number of hops ($H=4$) \\
+$\mathcal{C}_t$ & legal candidates at hop $t$ (incl.\ STOP) \\
+$\tau_t=(e_1..e_t)$ & selected entities (trace) \\
+$g=(g_1..g_m)$ & heuristic gold path \\
+$f$ & frozen answer head, $\hat a=f(q,\tau)$ \\
+$\pi_\theta$, $V_\phi$ & policy and value function \\
+$r_t$, $r_T$ & hop reward, terminal reward \\
+$w_\bullet$ & reward weights (Table~\ref{tab:reward-weights}) \\
+\bottomrule
+\end{tabular}
+\caption{Notation.}
+\label{tab:notation}
+\end{table}
