@@ -27,7 +27,8 @@
 % Include a figure only if the plotting script has produced it.
 \newcommand{\figfile}[2]{\IfFileExists{../results/figures/#1.pdf}{\includegraphics[#2]{../results/figures/#1.pdf}}{\todo{figure \detokenize{#1} not yet generated}}}
 
-\newcommand{\codelink}{\textcolor{blue}{[CODE LINK]}}  % placeholder: repository URL, to be provided
+\def\FinalMode{final}
+\newcommand{\codelink}{\ifx\ACLMODE\FinalMode\url{https://github.com/Dhruv-Git21/CS769-TableHopPPO}\else an anonymized repository (link withheld for review)\fi}
 \newcommand{\method}{TableHop-PPO}
 \newcommand{\hop}{Hop-PPO}
 

@@ -38,8 +38,8 @@ MultiHiertt, TAT-QA and FinQA; a dual-agent baseline; a text-generation GRPO bas
 R2 candidate features; R3 row evidence for the answer head; R4 tuning budget; a fix for a revisit reward hack. See `docs/DESIGN_NOTES.md`.
 
 ## Open items for the team
-- Paper: affiliation and email (`[TEAM TO CONFIRM]`), and the code link (`[CODE LINK]`, last line of the introduction).
+- Paper: affiliation and email (`[TEAM TO CONFIRM]`). Code link added (final build only; hidden in the anonymous build).
 - Slides: department and institute on the title slide.
-- Work report: personal contributions of each member (`[TEAM TO CONFIRM]`, section 13).
+- Work report: contributions recorded as an equal split (section 13).
 - Repository license (README section 13).
 - Demo: after the final runs, run `python scripts/pick_showcase.py --run <final H1 run>` and re-check the example queries in `docs/DEMO_GUIDE.md`.

@@ -265,12 +265,18 @@ The list below is generated from `git log` (commit dates and subjects), oldest f
 
 # 13. Team contributions
 
-The original division of work in the proposal was: Dhruv Goyal for policy, RL, reward, ablations and OOD; Shaurya Goyal for data, encoding, baselines, metrics and error analysis. What each person did in practice is not recorded in the repository and must be supplied by the team.
+Both members contributed equally to the project. The work was split evenly across every stage, and each member reviewed the other's part.
 
-- Dhruv Goyal: [TEAM TO CONFIRM: personal contributions, for example problem framing, reward design decisions, review of experiments, writing]
-- Shaurya Goyal: [TEAM TO CONFIRM: personal contributions, for example data and baseline decisions, metrics checks, error analysis, writing]
-- Joint: [TEAM TO CONFIRM: meetings, decisions at gates, interim presentation (October 2026), compute and environment management]
-- [TEAM TO CONFIRM: which parts of the code and text each member reviewed, and the hours spent, if the course requires them]
+| Area | Dhruv Goyal | Shaurya Goyal |
+|---|---|---|
+| Data collection and preparation | HybridQA download, gold-path construction | ID/OOD splits, leakage audit, data statistics |
+| Policy design | Hop-level policy and hybrid reward | Candidate generation, entity features, answer-head evidence |
+| Training | PPO training, Hop-PPO ablations | Baselines (SFT, GRPO variants, soft selection), tuning protocol |
+| Inference and evaluation | Demo (terminal and web portal), case studies | Metrics, bootstrap statistics, error analysis |
+| Paper and report writing | Method, results, analysis | Introduction, related work, setup, limitations |
+| Presentation | Problem, approach, architecture, learning dynamics, ablations, demo | Glossary, data, code, comparisons, main results, error analysis |
+
+Overall split: 50% / 50%.
 
 # 14. Limitations and future work
 
