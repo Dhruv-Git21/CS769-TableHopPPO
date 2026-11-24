@@ -21,7 +21,7 @@ from lxml import etree
 from pptx import Presentation
 from pptx.chart.data import CategoryChartData
 from pptx.dml.color import RGBColor
-from pptx.enum.chart import XL_CHART_TYPE, XL_LABEL_POSITION
+from pptx.enum.chart import XL_CHART_TYPE, XL_LABEL_POSITION, XL_TICK_LABEL_POSITION, XL_TICK_MARK
 from pptx.enum.shapes import MSO_CONNECTOR, MSO_SHAPE
 from pptx.enum.text import MSO_ANCHOR, PP_ALIGN
 from pptx.oxml.ns import qn
@@ -432,7 +432,7 @@ def build(out: Path, script_out: Path | None = None) -> None:
             ["Training", "3,000", "official training set", "learning (every method)"],
             ["Dev", "1,000", "official training set, unseen tables", "tuning and choosing settings"],
             ["Test", "2,045", "official dev set, unseen tables", "final scores (once per model)"]]
-    D.table(s, 1.12, 3.55, 11.0, rows, [1.9, 1.8, 4.1, 3.2], "How we split the data (results/data_report.md).",
+    D.table(s, 1.12, 3.55, 11.0, rows, [1.9, 1.8, 4.1, 3.2], "How we split the data.",
             size=17, center={1}, row_h=0.62, cap_color=WHITE)
     D.text(s, 12.8, 3.05, 6.1, 0.6, "Keeping it fair", 24, BODY_B, WHITE)
     D.text(s, 12.8, 3.75, 6.1, 4.2, [
@@ -529,7 +529,7 @@ def build(out: Path, script_out: Path | None = None) -> None:
     # 6b publication architecture figure (TikZ, paper/figures/architecture.tex)
     s = D.slide("white", "Architecture (paper figure)", "Full model: input, hop-level policy loop, frozen answer head, PPO update", pin=True)
     D.figure(s, ROOT / "paper/figures/architecture.png", 1.12, 2.9, 17.8, 6.9,
-             "TableHop-PPO architecture (vector version: paper/figures/architecture.pdf).", cap_color=RED)
+             "TableHop-PPO architecture (same figure as in the paper).", cap_color=RED)
     say(s, "Architecture (paper figure)", 0.75, "Dhruv",
         "This is the same system as our paper figure. Left, the input: the question, the table and a linked page; the "
         "orange numbers show the two hops for our example. Middle, the part we train: candidates are shortlisted, the "
@@ -727,7 +727,7 @@ def build(out: Path, script_out: Path | None = None) -> None:
     D.card(s, 1.12, 2.9, 9.0, 7.15)
     cats, vals = [], []
     for name, v in (("Oracle path", R.m0["em"] if R.m0 else None), ("Full-table reader", em_b1),
-                    ("Hop-PPO (ours)", em_h1), ("Ours: answer reward only", R.em("a1_terminal")),
+                    ("Hop-PPO (ours)", em_h1), ("Ours, no step reward", R.em("a1_terminal")),
                     ("Answer-only RL", R.em("b2a_grpo"))):
         if v is not None:
             cats.append(name)
@@ -754,12 +754,15 @@ def build(out: Path, script_out: Path | None = None) -> None:
         pt = ser.points[k]
         pt.format.fill.solid()
         pt.format.fill.fore_color.rgb = RGBColor.from_string(
-            RED if name == "Hop-PPO (ours)" else "F2A37E" if name.startswith("Ours:") else
+            RED if name == "Hop-PPO (ours)" else "F2A37E" if name.startswith("Ours,") else
             "9CA3AF" if name == "Oracle path" else "1F6F8B")
     ca, va = ch.category_axis, ch.value_axis
     ca.reverse_order = True
     ca.tick_labels.font.size, ca.tick_labels.font.name = Pt(15), BODY
     va.visible = False
+    va.tick_label_position = XL_TICK_LABEL_POSITION.NONE
+    va.major_tick_mark = XL_TICK_MARK.NONE
+    va.format.line.fill.background()
     va.has_major_gridlines = False
     va.maximum_scale = max(vals) * 1.25 if vals else 1
     va.minimum_scale = 0
@@ -819,7 +822,7 @@ def build(out: Path, script_out: Path | None = None) -> None:
             ["3 tuning tries per method", "fits a laptop; every method gets the same number", "all trained methods"],
             ["No reward for revisiting", "the model could earn reward by looping on a correct cell; fixed and tested",
              "our method and its versions"]]
-    D.table(s, 1.12, 3.55, 17.8, rows, [4.4, 9.8, 3.6], "Design changes (docs/DESIGN_NOTES.md).", size=16,
+    D.table(s, 1.12, 3.55, 17.8, rows, [4.4, 9.8, 3.6], "Design changes made during development.", size=16,
             row_h=1.15, cap_color=RED)
     say(s, "Backup: what we fixed", 0.0, "Dhruv", "If asked why numbers changed during the project: these four changes "
         "were all decided on dev questions, applied to every method, before any test score existed.")

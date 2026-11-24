@@ -183,7 +183,7 @@ def f4_f7_f9(by, out):
         if not hops or sum(k for k in hops if k) == 0:
             continue
         stats[m] = tax
-        if m in ABLATIONS:  # F4/F7 compare main methods; ablations appear in F5/F9
+        if m in ABLATIONS or m == "m0":  # F4/F7 compare learned main methods (oracle is 100% by construction)
             continue
         xs = sorted(valid)
         a4.plot(xs, [np.mean(valid[x]) for x in xs], marker="o", color=color_of(m, i), label=disp(m))
