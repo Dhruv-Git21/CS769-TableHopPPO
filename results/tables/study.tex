@@ -3,13 +3,18 @@
 method & trial & setting & dev EM & chosen \\
 \midrule
 B1 SFT & t0 & default & 26.3 &  \\
+B1 SFT & t1 & sft.lr=1.0e-4 & 28.4 & yes \\
+B1 SFT & t2 & sft.lr=1.0e-3 & 23.0 &  \\
 B2a GRPO & t0 & default & 10.1 &  \\
 B2a GRPO & t1 & ppo.lr\_head=1.0e-3 & 10.5 &  \\
-B2a GRPO & t2 & ppo.entropy\_coef=0.03 & 11.7 &  \\
-B2b GRPO+path & t0 & default & 7.4 &  \\
+B2a GRPO & t2 & ppo.entropy\_coef=0.03 & 11.7 & yes \\
+B2b GRPO+path & t0 & default & 7.4 & yes \\
 B2b GRPO+path & t1 & ppo.lr\_head=1.0e-3 & 7.0 &  \\
-B3 soft & t0 & default & 13.9 &  \\
-H1 Hop-PPO & t0 & default & 11.4 &  \\
+B2b GRPO+path & t2 & ppo.entropy\_coef=0.03 & 6.8 &  \\
+B3 soft & t0 & default & 13.9 & yes \\
+B3 soft & t1 & soft.lr=3.0e-4 & 13.1 &  \\
+B3 soft & t2 & soft.lr=3.0e-3 & 12.8 &  \\
+H1 Hop-PPO & t0 & default & 11.4 & yes \\
 H1 Hop-PPO & t1 & ppo.lr\_head=1.0e-3 & 8.1 &  \\
 H1 Hop-PPO & t2 & ppo.entropy\_coef=0.03 & 9.9 &  \\
 \bottomrule

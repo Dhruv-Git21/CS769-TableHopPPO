@@ -2,14 +2,41 @@
 \toprule
 split & comparison & n questions & diff EM & 95\% CI & p \\
 \midrule
-dev & H1 Hop-PPO - M0 oracle & 1000 & -0.489 & [-0.521, -0.457] & 0.0000 \\
-dev & H1 Hop-PPO - B1 SFT & 1000 & -0.149 & [-0.180, -0.119] & 0.0000 \\
-dev & H1 Hop-PPO - B2a GRPO & 1000 & +0.013 & [-0.009, +0.035] & 0.2614 \\
-dev & H1 Hop-PPO - B2b GRPO+path & 1000 & +0.040 & [+0.020, +0.061] & 0.0002 \\
-dev & H1 Hop-PPO - B3 soft & 1000 & -0.025 & [-0.052, +0.002] & 0.0742 \\
-dev & H1 Hop-PPO - A1 terminal-only & 1000 & -0.089 & [-0.113, -0.065] & 0.0000 \\
-dev & H1 Hop-PPO - A2 no-redund. & 1000 & -0.067 & [-0.092, -0.042] & 0.0000 \\
-dev & H1 Hop-PPO - A3 no-schema & 1000 & +0.005 & [-0.017, +0.026] & 0.6894 \\
-dev & H1 Hop-PPO - A4 unrestricted & 1000 & -0.005 & [-0.026, +0.016] & 0.6648 \\
+dev & H1 Hop-PPO - M0 oracle & 1000 & -0.501 & [-0.532, -0.471] & 0.0000 \\
+dev & H1 Hop-PPO - B1 SFT & 1000 & -0.190 & [-0.219, -0.161] & 0.0000 \\
+dev & H1 Hop-PPO - B2a GRPO & 1000 & -0.029 & [-0.041, -0.017] & 0.0000 \\
+dev & H1 Hop-PPO - B2b GRPO+path & 1000 & +0.030 & [+0.015, +0.046] & 0.0002 \\
+dev & H1 Hop-PPO - B3 soft & 1000 & -0.029 & [-0.050, -0.008] & 0.0046 \\
+dev & H1 Hop-PPO - A1 terminal-only & 1000 & -0.032 & [-0.045, -0.020] & 0.0000 \\
+dev & H1 Hop-PPO - A2 no-redund. & 1000 & -0.054 & [-0.068, -0.039] & 0.0000 \\
+dev & H1 Hop-PPO - A3 no-schema & 1000 & -0.004 & [-0.015, +0.007] & 0.4714 \\
+dev & H1 Hop-PPO - A4 unrestricted & 1000 & -0.001 & [-0.013, +0.012] & 0.9298 \\
+test & H1 Hop-PPO - M0 oracle & 2045 & -0.476 & [-0.497, -0.455] & 0.0000 \\
+test & H1 Hop-PPO - B1 SFT & 2045 & -0.175 & [-0.194, -0.156] & 0.0000 \\
+test & H1 Hop-PPO - B2a GRPO & 2045 & -0.020 & [-0.028, -0.012] & 0.0000 \\
+test & H1 Hop-PPO - B2b GRPO+path & 2045 & +0.026 & [+0.016, +0.036] & 0.0000 \\
+test & H1 Hop-PPO - B3 soft & 2045 & -0.018 & [-0.031, -0.005] & 0.0056 \\
+test & H1 Hop-PPO - A1 terminal-only & 2045 & -0.023 & [-0.032, -0.015] & 0.0000 \\
+test & H1 Hop-PPO - A2 no-redund. & 2045 & -0.052 & [-0.062, -0.042] & 0.0000 \\
+test & H1 Hop-PPO - A3 no-schema & 2045 & +0.004 & [-0.003, +0.011] & 0.2372 \\
+test & H1 Hop-PPO - A4 unrestricted & 2045 & +0.010 & [+0.001, +0.018] & 0.0330 \\
+ood\_dev & H1 Hop-PPO - M0 oracle & 500 & -0.500 & [-0.542, -0.458] & 0.0000 \\
+ood\_dev & H1 Hop-PPO - B1 SFT & 500 & -0.201 & [-0.239, -0.163] & 0.0000 \\
+ood\_dev & H1 Hop-PPO - B2a GRPO & 500 & -0.016 & [-0.031, -0.001] & 0.0306 \\
+ood\_dev & H1 Hop-PPO - B2b GRPO+path & 500 & +0.020 & [-0.000, +0.041] & 0.0554 \\
+ood\_dev & H1 Hop-PPO - B3 soft & 500 & -0.025 & [-0.051, +0.000] & 0.0530 \\
+ood\_dev & H1 Hop-PPO - A1 terminal-only & 500 & -0.018 & [-0.036, +0.000] & 0.0532 \\
+ood\_dev & H1 Hop-PPO - A2 no-redund. & 500 & -0.049 & [-0.068, -0.029] & 0.0000 \\
+ood\_dev & H1 Hop-PPO - A3 no-schema & 500 & +0.006 & [-0.007, +0.019] & 0.3830 \\
+ood\_dev & H1 Hop-PPO - A4 unrestricted & 500 & +0.004 & [-0.013, +0.021] & 0.6356 \\
+ood\_test & H1 Hop-PPO - M0 oracle & 569 & -0.441 & [-0.480, -0.401] & 0.0000 \\
+ood\_test & H1 Hop-PPO - B1 SFT & 569 & -0.141 & [-0.175, -0.107] & 0.0000 \\
+ood\_test & H1 Hop-PPO - B2a GRPO & 569 & -0.008 & [-0.022, +0.006] & 0.2672 \\
+ood\_test & H1 Hop-PPO - B2b GRPO+path & 569 & +0.025 & [+0.006, +0.045] & 0.0122 \\
+ood\_test & H1 Hop-PPO - B3 soft & 569 & -0.006 & [-0.032, +0.019] & 0.6198 \\
+ood\_test & H1 Hop-PPO - A1 terminal-only & 569 & -0.009 & [-0.023, +0.004] & 0.1782 \\
+ood\_test & H1 Hop-PPO - A2 no-redund. & 569 & -0.028 & [-0.045, -0.012] & 0.0008 \\
+ood\_test & H1 Hop-PPO - A3 no-schema & 569 & +0.016 & [+0.005, +0.027] & 0.0062 \\
+ood\_test & H1 Hop-PPO - A4 unrestricted & 569 & +0.005 & [-0.009, +0.021] & 0.4834 \\
 \bottomrule
 \end{tabular}

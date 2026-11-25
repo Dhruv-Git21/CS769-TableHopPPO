@@ -45,9 +45,9 @@ Multi-hop question answering over tables and linked text requires a chain of int
 We cast each hop as a discrete entity-selection action (a table cell, a linked passage, or STOP) in a partially observable decision process and train the selection policy with proximal policy optimization (PPO) under a hybrid reward that combines a hop-level term with a terminal answer reward.
 A frozen answer head reads the selected evidence and produces the answer.
 We compare this agent, under matched rollout and tuning budgets and with a shared encoder, candidate set and answer head, against supervised fine-tuning, trace-level group-relative RL with and without gold-path supervision, a soft attention-based selector, and four reward and action-space ablations on HybridQA, including a split with held-out table clusters.
-On the \splitname\ split, supervised fine-tuning that reads the whole table remains the strongest method (\R{EmBOneSft} EM versus \R{EmHOneHoppo} for \hop; oracle evidence gives \R{EmMZero}).
-Among path-based learners, \hop\ produces the most valid paths (\R{ValidHOneHoppo}\% strict validity) and beats trace-level RL with the same path supervision (\D{BTwoBGrpoPath} EM points), but its EM is not reliably different from answer-only trace-level RL (\D{BTwoAGrpo}).
-The dense hop reward does not improve accuracy: the same policy trained with the terminal reward only reaches \R{EmAOneTerminal} EM, because hop rewards teach the policy to stop after about two hops and the frozen reader then sees less evidence.
+On the held-out \splitname\ split (3 seeds), supervised fine-tuning that reads the whole table remains by far the strongest method (\R{EmBOneSft} EM versus \R{EmHOneHoppo} for \hop; oracle evidence gives \R{EmMZero}).
+Hop-level credit helps against trace-level RL that receives the same path signal only at the end (\D{BTwoBGrpoPath} EM points, consistent across seeds) and yields the most valid paths among the main methods, but it does not beat answer-only trace-level RL, and the dense reward does not improve accuracy over a terminal-only reward.
+Across seeds, accuracy tracks how many hops a policy takes: runs that learn to stop after about two hops read less evidence and answer fewer questions.
 All experiments run on a single laptop (Apple M4, no discrete GPU) with small frozen backbones, so our conclusions concern this regime and not large language models.
 \end{abstract}
 

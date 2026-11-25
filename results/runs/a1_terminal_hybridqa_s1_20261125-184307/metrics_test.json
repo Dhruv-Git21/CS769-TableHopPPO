@@ -1,0 +1,37 @@
+{
+  "em": 0.08557457212713937,
+  "f1": 0.12017944374049652,
+  "path_validity_strict": 0.0950527373179307,
+  "path_validity_loose": 0.7275238573581115,
+  "gold_f1": 0.1434789887828562,
+  "gold_lcs": 0.15218483174284278,
+  "hop_efficiency": 0.040808638874937214,
+  "mean_hops": 3.9926650366748166,
+  "n": 2045,
+  "n_with_gold_path": 1991,
+  "run_id": "a1_terminal_hybridqa_s1_20261125-184307",
+  "method": "a1_terminal",
+  "split": "test",
+  "eval_time_s": 52.58358311653137,
+  "env_lock_sha256": "e978ef9ce1492347b3b64a2abaa80ba39a38963485e4d81290f321d863eb77e0",
+  "answer_head_sha256": "b1fad48ceb67e7624f11eb610b90b4af71588e392517c6c5d4967966939c15a4",
+  "hop_validity_by_index": {
+    "0": 0.28578603716725265,
+    "1": 0.04481369587109768,
+    "2": 0.041289023162134945,
+    "3": 0.008559919436052367
+  },
+  "hop_count_by_index": {
+    "0": 1991,
+    "1": 1986,
+    "2": 1986,
+    "3": 1986
+  },
+  "reward_components_mean": {
+    "hop": 0.0,
+    "red": 0.0,
+    "schema": 0.0,
+    "step": 0.0,
+    "terminal": 0.12017944374049652
+  }
+}

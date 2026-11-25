@@ -19,17 +19,19 @@ Working code: the clean, GitHub-ready directory `../tablehop-ppo-submission/` (R
 - Protocol: 48k training episodes or examples per run, 3 tuning trials per method on dev, 3 seeds, test evaluated once per run, 95% bootstrap CIs and paired tests.
 - Compute: one Apple M4 laptop (16 GB, CPU + MPS, no GPU); frozen bge-small encoder and flan-t5-small answer head.
 
-## Status of results in this build
-The tables, figures, paper, report and slides were built from the results available on 2026-11-24: the **development split with seed 0** for each method. The 3-seed final runs and the test/OOD evaluation are running unattended (`scripts/run_study.py`). When they finish, rebuild with `make tables figures paper slides report release`. The prose uses generated macros, so numbers and the split name update automatically; then re-check the claim directions (see `STATUS.md` checklist).
+## Status of results
+Final: all 9 trained methods x 3 seeds, evaluated once on test and OOD test (results/TEST_LOG.md), 2026-11-26.
 
-## Hypotheses (preliminary, dev, seed 0)
+## Hypotheses (final, test split, 3 seeds)
 | ID | Claim | Status |
 |---|---|---|
-| H1 | Hop-level credit beats trace-level RL | inconclusive (vs B2a, CI includes 0) |
-| H1b | Gains are not just extra supervision (vs B2b) | supported in direction |
-| H1c | The dense reward matters (vs A1) | not supported (A1 is more accurate) |
-| H2 | Paths are valid and auditable | partially supported |
-| H3 | Smaller ID-to-OOD gap | not yet assessed |
+| H1 | Hop-level credit beats trace-level RL | not supported (vs B2a: -2.0 [-2.8, -1.2], seeds disagree) |
+| H1b | Gains are not just extra supervision (vs B2b) | supported (+2.6 [+1.6, +3.6], all seeds) |
+| H1c | The dense reward matters (vs A1) | not supported |
+| H2 | Paths are valid and auditable | partially supported (highest validity among main methods, 14.0%) |
+| H3 | Smaller ID-to-OOD gap | inconclusive (5.8% vs 14.6% relative for SFT; not tested) |
+
+Headline (test EM): oracle 57.2, SFT 27.0, answer-only GRPO 11.5, soft selection 11.3, Hop-PPO 9.5, answer+path GRPO 6.9.
 
 ## What was cut
 MultiHiertt, TAT-QA and FinQA; a dual-agent baseline; a text-generation GRPO baseline with a large model; potential-based shaping; 5 seeds; GPU-scale models. Tuning used 3 trials per method instead of 6 (design change R4).

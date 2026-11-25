@@ -1,0 +1,106 @@
+{
+  "run_id": "b2b_grpo_path_hybridqa_s1_20261125-021911",
+  "method": "b2b_grpo_path",
+  "dataset": "hybridqa",
+  "seed": 1,
+  "config": {
+    "device": "mps",
+    "seed": 0,
+    "paths": {
+      "data_dir": "data",
+      "cache_dir": "data/cache",
+      "results_dir": "results"
+    },
+    "data": {
+      "dataset": "hybridqa",
+      "processed_dir": "data/processed"
+    },
+    "env": {
+      "K": 32,
+      "col_topk": 8,
+      "max_hops": 4,
+      "unrestricted": false,
+      "bm25_weight": 0.5,
+      "encoder": "BAAI/bge-small-en-v1.5",
+      "embed_batch": 64,
+      "embed_max_len": 160
+    },
+    "reward": {
+      "w_ans": 1.0,
+      "w_hop": 0.2,
+      "w_red": 0.1,
+      "w_schema": 0.05,
+      "w_step": 0.02,
+      "w_stop": 0.0,
+      "w_path": 0.2,
+      "terminal_only": true,
+      "no_redundancy": false,
+      "no_schema": false,
+      "no_step": false,
+      "path_f1_terminal": true,
+      "schema_cues": {
+        "number": [
+          "how many",
+          "number of",
+          "how much",
+          "percent",
+          "percentage",
+          "total",
+          "average"
+        ],
+        "date": [
+          "what year",
+          "which year",
+          "in what year",
+          "when",
+          "what date",
+          "year"
+        ]
+      }
+    },
+    "ppo": {
+      "gamma": 1.0,
+      "gae_lambda": 0.95,
+      "clip_eps": 0.2,
+      "value_coef": 0.5,
+      "entropy_coef": 0.01,
+      "epochs": 4,
+      "grad_clip": 0.5,
+      "lr_head": 0.0003,
+      "lr_backbone": 1e-05,
+      "rollout_batch": 64
+    },
+    "grpo": {
+      "group_size": 8,
+      "questions_per_update": 8
+    },
+    "model": {},
+    "answer_head": {
+      "path": "results/answer_head_row"
+    },
+    "rl": {
+      "hidden": 256,
+      "budget_trajectories": 48000,
+      "eval_every": 50,
+      "eval_subset": 300,
+      "minibatch": 256,
+      "env_pool": 512,
+      "stub_dim": 128
+    },
+    "method": "b2b_grpo_path"
+  },
+  "git_hash": "df0dd879f91ef99a517edc6557f96f8b96c0f090",
+  "git_dirty": true,
+  "start_time": "2026-11-25T02:19:11",
+  "device": "mps",
+  "python": "3.12.16",
+  "torch": "2.15.0",
+  "transformers": "5.23.0",
+  "env_lock_sha256": "e978ef9ce1492347b3b64a2abaa80ba39a38963485e4d81290f321d863eb77e0",
+  "status": "done",
+  "answer_head_sha256": "b1fad48ceb67e7624f11eb610b90b4af71588e392517c6c5d4967966939c15a4",
+  "train_time_s": 531.0337836742401,
+  "trajectories_seen": 48000,
+  "n_updates": 750,
+  "end_time": "2026-11-25T02:28:02"
+}

@@ -1,0 +1,15 @@
+\begin{tabular}{lllll}
+\toprule
+comparison & n questions & diff EM & 95\% CI & p \\
+\midrule
+H1 Hop-PPO - M0 oracle & 2045 & -0.476 & [-0.497, -0.455] & 0.0000 \\
+H1 Hop-PPO - B1 SFT & 2045 & -0.175 & [-0.194, -0.156] & 0.0000 \\
+H1 Hop-PPO - B2a GRPO & 2045 & -0.020 & [-0.028, -0.012] & 0.0000 \\
+H1 Hop-PPO - B2b GRPO+path & 2045 & +0.026 & [+0.016, +0.036] & 0.0000 \\
+H1 Hop-PPO - B3 soft & 2045 & -0.018 & [-0.031, -0.005] & 0.0056 \\
+H1 Hop-PPO - A1 terminal-only & 2045 & -0.023 & [-0.032, -0.015] & 0.0000 \\
+H1 Hop-PPO - A2 no-redund. & 2045 & -0.052 & [-0.062, -0.042] & 0.0000 \\
+H1 Hop-PPO - A3 no-schema & 2045 & +0.004 & [-0.003, +0.011] & 0.2372 \\
+H1 Hop-PPO - A4 unrestricted & 2045 & +0.010 & [+0.001, +0.018] & 0.0330 \\
+\bottomrule
+\end{tabular}

@@ -2,5 +2,25 @@
 \toprule
 pair & method & EM ID & EM OOD & gap abs & gap rel \\
 \midrule
+dev$\rightarrow$ood\_dev & M0 oracle & 0.603 & 0.590 & +0.013 & 2.2\% \\
+test$\rightarrow$ood\_test & M0 oracle & 0.572 & 0.531 & +0.041 & 7.2\% \\
+dev$\rightarrow$ood\_dev & B1 SFT & 0.291 & 0.291 & +0.000 & 0.0\% \\
+test$\rightarrow$ood\_test & B1 SFT & 0.270 & 0.231 & +0.039 & 14.6\% \\
+dev$\rightarrow$ood\_dev & B2a GRPO & 0.131 & 0.106 & +0.025 & 19.1\% \\
+test$\rightarrow$ood\_test & B2a GRPO & 0.115 & 0.098 & +0.017 & 14.9\% \\
+dev$\rightarrow$ood\_dev & B2b GRPO+path & 0.071 & 0.070 & +0.001 & 1.9\% \\
+test$\rightarrow$ood\_test & B2b GRPO+path & 0.069 & 0.064 & +0.005 & 7.2\% \\
+dev$\rightarrow$ood\_dev & B3 soft & 0.131 & 0.115 & +0.015 & 11.7\% \\
+test$\rightarrow$ood\_test & B3 soft & 0.113 & 0.096 & +0.017 & 14.9\% \\
+dev$\rightarrow$ood\_dev & H1 Hop-PPO & 0.102 & 0.090 & +0.012 & 11.5\% \\
+test$\rightarrow$ood\_test & H1 Hop-PPO & 0.095 & 0.090 & +0.006 & 5.8\% \\
+dev$\rightarrow$ood\_dev & A1 terminal-only & 0.134 & 0.108 & +0.026 & 19.2\% \\
+test$\rightarrow$ood\_test & A1 terminal-only & 0.119 & 0.099 & +0.019 & 16.5\% \\
+dev$\rightarrow$ood\_dev & A2 no-redund. & 0.155 & 0.139 & +0.017 & 10.7\% \\
+test$\rightarrow$ood\_test & A2 no-redund. & 0.148 & 0.118 & +0.030 & 20.2\% \\
+dev$\rightarrow$ood\_dev & A3 no-schema & 0.106 & 0.084 & +0.022 & 20.5\% \\
+test$\rightarrow$ood\_test & A3 no-schema & 0.091 & 0.074 & +0.017 & 19.0\% \\
+dev$\rightarrow$ood\_dev & A4 unrestricted & 0.102 & 0.086 & +0.016 & 16.0\% \\
+test$\rightarrow$ood\_test & A4 unrestricted & 0.086 & 0.084 & +0.001 & 1.4\% \\
 \bottomrule
 \end{tabular}

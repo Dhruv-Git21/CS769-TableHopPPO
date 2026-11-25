@@ -1,0 +1,35 @@
+{
+  "em": 0.1054481546572935,
+  "f1": 0.16087319729674737,
+  "path_validity_strict": 0.20018281535648993,
+  "path_validity_loose": 0.9981718464351006,
+  "gold_f1": 0.17379646556977452,
+  "gold_lcs": 0.1590493601462523,
+  "hop_efficiency": 0.09841560024375381,
+  "mean_hops": 2.0492091388400704,
+  "n": 569,
+  "n_with_gold_path": 547,
+  "run_id": "h1_hoppo_hybridqa_s0_20261123-051021",
+  "method": "h1_hoppo",
+  "split": "ood_test",
+  "eval_time_s": 14.357787132263184,
+  "env_lock_sha256": "e978ef9ce1492347b3b64a2abaa80ba39a38963485e4d81290f321d863eb77e0",
+  "answer_head_sha256": "b1fad48ceb67e7624f11eb610b90b4af71588e392517c6c5d4967966939c15a4",
+  "hop_validity_by_index": {
+    "0": 0.3272394881170018,
+    "1": 0.07495429616087751,
+    "2": 0.0
+  },
+  "hop_count_by_index": {
+    "0": 547,
+    "1": 547,
+    "2": 26
+  },
+  "reward_components_mean": {
+    "hop": 0.0773286467486819,
+    "red": -0.0005272407732864675,
+    "schema": -0.0015817223198594025,
+    "step": -0.04098418277680141,
+    "terminal": 0.16087319729674737
+  }
+}

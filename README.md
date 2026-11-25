@@ -194,8 +194,23 @@ Metrics: exact match (EM), token F1, strict and loose path validity, gold-path F
 
 ## 7. Results
 
-<!-- RESULTS:BEGIN (generated from results/tables/main.csv; do not edit by hand) -->
-See `results/tables/main.csv` and `results/figures/`. This section is filled automatically after the final runs.
+<!-- RESULTS:BEGIN (generated from results/tables/main_head.csv) -->
+HybridQA **test** split (official-dev questions on tables never seen in training), mean ± std over 3 seeds; generated from `results/tables/`.
+
+| Method | Seeds | Exact match | 95% CI | F1 | Path validity | Avg hops |
+|---|---|---|---|---|---|---|
+| M0 oracle path (upper bound) | 1 | 0.572±0.000 | [0.550, 0.593] | 0.640±0.000 | 1.000±0.000 | 2.06±0.00 |
+| B1 full-table reader (SFT) | 3 | 0.270±0.004 | [0.259, 0.281] | 0.333±0.004 | n/a | n/a |
+| B2a answer-only RL (GRPO) | 3 | 0.115±0.023 | [0.107, 0.123] | 0.158±0.025 | 0.105±0.031 | 4.00±0.00 |
+| B2b answer+path RL (GRPO) | 3 | 0.069±0.002 | [0.063, 0.076] | 0.108±0.002 | 0.090±0.004 | 4.00±0.00 |
+| B3 soft selection | 3 | 0.113±0.008 | [0.105, 0.121] | 0.157±0.009 | 0.064±0.003 | 3.00±0.00 |
+| **H1 Hop-PPO (ours)** | 3 | 0.095±0.013 | [0.088, 0.103] | 0.135±0.013 | 0.140±0.044 | 2.70±1.13 |
+| A1 ours, answer reward only | 3 | 0.119±0.061 | [0.110, 0.127] | 0.158±0.069 | 0.121±0.044 | 4.00±0.00 |
+| A2 ours, no repeat penalty | 3 | 0.148±0.065 | [0.139, 0.156] | 0.194±0.072 | 0.183±0.017 | 3.30±1.22 |
+| A3 ours, no type check | 3 | 0.091±0.020 | [0.084, 0.098] | 0.133±0.023 | 0.134±0.065 | 3.10±1.05 |
+| A4 ours, any-cell moves | 3 | 0.086±0.007 | [0.079, 0.092] | 0.129±0.007 | 0.100±0.006 | 4.00±0.00 |
+
+**Findings.** Full-table SFT is the most accurate method. Hop-PPO beats trace-level RL that gets the same path signal only at the end (+2.6 EM points, 95% CI [+1.6, +3.6], every seed) and has the most valid paths among the main methods, but it does not beat answer-only GRPO, and the dense hop reward does not improve accuracy over a terminal-only reward. Across seeds, accuracy tracks how many hops the policy takes (how much evidence it reads). Full tables, figures and the test log are in `results/`; the paper is `deliverables/paper.pdf`.
 <!-- RESULTS:END -->
 
 ## 8. Repository layout

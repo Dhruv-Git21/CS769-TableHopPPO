@@ -2,31 +2,31 @@
 \label{sec:results}
 
 All numbers in this section are computed by scripts directly from the run logs.
-Numbers in the text refer to the \splitname\ split; Table~\ref{tab:main} lists every split that has been evaluated.
+Numbers in the text refer to the \splitname\ split; Tables in this section show the \splitname\ split; all splits are listed in Appendix~\ref{app:allsplits}.
 
 \subsection{Main comparison (E1)}
 \begin{table*}[t]
 \centering\small
-\resizebox{\textwidth}{!}{\input{../results/tables/main.tex}}
+\resizebox{\textwidth}{!}{\input{../results/tables/main_head.tex}}
 \caption{In-domain comparison on HybridQA: exact match (EM) with seed mean $\pm$ std and a 95\% bootstrap interval over questions, token F1, strict path validity, hop efficiency and mean hops (definitions in Section~\ref{sec:setup}). Path metrics use questions with a gold path; B1 has no hops. All path-based methods share the encoder, candidates and frozen answer head, and all trained methods use the same rollout and tuning budgets.}
 \label{tab:main}
 \end{table*}
 
 \paragraph{Accuracy.}
-Full-table SFT (B1) is the most accurate method, with \R{EmBOneSft} EM \CI{BOneSft}, and \hop\ (H1) is \D{BOneSft} EM points behind it (Table~\ref{tab:paired}); we therefore do not find that hop-level selection beats SFT in this regime.
-All path-based methods are far below the oracle M0 (\R{EmMZero} EM), which reads the gold path with the same frozen answer head, so evidence selection, not the reader, is the main bottleneck.
+Full-table SFT (B1) is the most accurate method, with \R{EmBOneSft} EM \CI{BOneSft}; \hop\ (H1) is \D{BOneSft} EM points behind it, and every seed agrees (Table~\ref{tab:paired}).
+All path-based methods are far below the oracle M0 (\R{EmMZero} EM), which reads the gold path with the same frozen answer head, so evidence selection, not the reader, is the bottleneck.
 \hop\ reaches \R{EmHOneHoppo} EM \CI{HOneHoppo}.
-Against answer-only GRPO (B2a, \R{EmBTwoAGrpo}) the difference is \D{BTwoAGrpo} points, an interval that includes zero.
-Against GRPO that receives the same gold-path signal at the end of the trace (B2b, \R{EmBTwoBGrpoPath}) the difference is \D{BTwoBGrpoPath}, so distributing path credit over hops helped relative to giving it once at the end (H1b).
-The one-shot soft selector B3 (\R{EmBThreeSoft}) is not reliably different from \hop\ (\D{BThreeSoft}).
+Against GRPO that receives the same gold-path signal at the end of the trace (B2b, \R{EmBTwoBGrpoPath}) the difference is \D{BTwoBGrpoPath}, positive for every seed (\R{SeeddiffBTwoBGrpoPath}), so distributing path credit over hops helps relative to giving it once at the end (H1b supported).
+Against answer-only GRPO (B2a, \R{EmBTwoAGrpo}) \hop\ is \D{BTwoAGrpo} points worse on pooled questions, with seeds disagreeing in sign (\R{SeeddiffBTwoAGrpo}); hop-level credit therefore does not beat answer-only trace-level RL here (H1 not supported).
+The one-shot soft selector B3 (\R{EmBThreeSoft}) is also slightly more accurate on average (\D{BThreeSoft}; per seed \R{SeeddiffBThreeSoft}).
 
 \paragraph{Paths.}
-\hop\ has the highest strict path validity of the learned path methods (\R{ValidHOneHoppo}\%, versus \R{ValidBTwoAGrpo}\% for B2a, \R{ValidBTwoBGrpoPath}\% for B2b and \R{ValidBThreeSoft}\% for B3) and uses \R{HopsHOneHoppo} hops on average, close to the mean gold-path length (\PathLenTrain), while both GRPO baselines run to the 4-hop limit.
-Validity is nevertheless low in absolute terms, so H2 (auditable, valid paths) is only partially supported: every answer comes with its evidence by construction, but most paths leave the gold path after the first hop (Figure~\ref{fig:curves}, right).
+\hop\ has the highest strict path validity of the main learned methods (\R{ValidHOneHoppo}\%, versus \R{ValidBTwoAGrpo}\% for B2a, \R{ValidBTwoBGrpoPath}\% for B2b and \R{ValidBThreeSoft}\% for B3). Two of its three seeds learn to stop after about two hops, close to the mean gold-path length (\PathLenTrain); the third never learns to stop and uses all four hops, which raises its EM but lowers its validity. Both GRPO baselines always run to the 4-hop limit.
+Validity is low in absolute terms, so H2 (auditable, valid paths) is only partially supported: every answer comes with its evidence by construction, but most paths leave the gold path after the first hop (Figure~\ref{fig:curves}, right).
 
 \begin{table}[t]
 \centering\small
-\resizebox{\columnwidth}{!}{\input{../results/tables/paired.tex}}
+\resizebox{\columnwidth}{!}{\input{../results/tables/paired_head.tex}}
 \caption{Paired bootstrap of the EM difference between H1 and each other method on the same questions (10{,}000 resamples): difference, 95\% interval and two-sided $p$.}
 \label{tab:paired}
 \end{table}
@@ -34,15 +34,15 @@ Validity is nevertheless low in absolute terms, so H2 (auditable, valid paths) i
 \subsection{Reward and action-space ablations (E2)}
 \begin{table*}[t]
 \centering\small
-\resizebox{\textwidth}{!}{\input{../results/tables/ablations.tex}}
+\resizebox{\textwidth}{!}{\input{../results/tables/ablations_head.tex}}
 \caption{Ablations of H1 on HybridQA: terminal-only reward (A1), no redundancy penalty (A2), no schema term (A3) and unrestricted action space (A4). Columns as in Table~\ref{tab:main}.}
 \label{tab:ablations}
 \end{table*}
 
-Removing the hop-level terms (A1, terminal reward only) \emph{raises} EM to \R{EmAOneTerminal} (H1 minus A1: \D{AOneTerminal}) with similar strict validity (\R{ValidAOneTerminal}\% versus \R{ValidHOneHoppo}\%).
-The mechanism is visible in the hop counts: with hop rewards and a step cost the policy learns to stop after about two hops (\R{HopsHOneHoppo}), whereas A1 uses all four (\R{HopsAOneTerminal}) and so hands the frozen reader more rows and passages.
-H1c (the dense reward matters beyond discrete actions) is therefore not supported for accuracy; the dense reward buys shorter, tidier traces, not more correct answers.
-Removing the redundancy penalty (A2, \R{EmATwoNoredund} EM, \D{ATwoNoredund}) has a similar effect for the same reason, while removing the schema term (A3, \D{AThreeNoschema}) or the action-space restriction (A4, \D{AFourUnrestricted}) makes no reliable difference.
+Removing the hop-level terms (A1, terminal reward only) gives \R{EmAOneTerminal} EM, \D{AOneTerminal} points from \hop\ on pooled questions, but the seeds disagree (\R{SeeddiffAOneTerminal}): one A1 seed is far more accurate and two are not.
+The common factor is the number of hops: across all variants, seeds whose policy keeps hopping to the limit hand the frozen reader more rows and passages and answer more questions, while seeds that learn to stop after about two hops answer fewer.
+H1c (the dense reward matters beyond discrete actions) is therefore not supported for accuracy; the dense reward mainly makes traces shorter.
+Removing the redundancy penalty (A2) gives the highest EM of all variants (\R{EmATwoNoredund}, \D{ATwoNoredund}; per seed \R{SeeddiffATwoNoredund}), removing the schema term (A3) makes no reliable difference (\D{AThreeNoschema}), and the unrestricted action space (A4, \R{EmAFourUnrestricted}) is slightly worse than \hop\ on every seed (\D{AFourUnrestricted}).
 
 \subsection{Learning dynamics and credit assignment (E4)}
 \begin{figure*}[t]
@@ -54,7 +54,7 @@ Removing the redundancy penalty (A2, \R{EmATwoNoredund} EM, \D{ATwoNoredund}) ha
 \end{figure*}
 
 The learning curves (Figure~\ref{fig:curves}, left) show no faster learning for \hop\ than for the trace-level baselines: all RL methods stay within a few EM points of one another throughout training and well below B1.
-Per-hop validity drops sharply after the first hop for every method, so we find no evidence that hop-level credit reduces error propagation in EM terms (H1 inconclusive); the reward-component traces (Appendix, Figure~\ref{fig:reward}) show the hop reward is learned early and the step cost falls once the policy learns to stop.
+Per-hop validity drops sharply after the first hop for every method, so we find no evidence that hop-level credit reduces error propagation in EM terms; the reward-component traces (Figure~\ref{fig:reward}) show the hop reward is learned early and the step cost falls once the policy learns to stop.
 
 \subsection{Out-of-domain generalization (E3)}
 \begin{table}[t]
@@ -65,9 +65,10 @@ Per-hop validity drops sharply after the first hop for every method, so we find 
 \end{table}
 
 \ifcsname GapHOneHoppoOodTest\endcsname
-The ID$\rightarrow$OOD gap of \hop\ is \GapHOneHoppoOodTest\ EM points, against \GapBOneSftOodTest\ for B1 and \GapBTwoAGrpoOodTest\ for B2a (Table~\ref{tab:ood}); the OOD split holds out whole table clusters of HybridQA and is not a cross-dataset test.
+On held-out table clusters (a within-HybridQA split, not a cross-dataset test), \hop\ loses \GapHOneHoppoOodTest\ EM points (\GaprelHOneHoppoOodTest\% relative) from test to OOD test, against \GapBOneSftOodTest\ (\GaprelBOneSftOodTest\%) for B1, \GapBTwoAGrpoOodTest\ (\GaprelBTwoAGrpoOodTest\%) for B2a and \GapBThreeSoftOodTest\ (\GaprelBThreeSoftOodTest\%) for B3 (Table~\ref{tab:ood}).
+The smaller relative gap is in the direction of H3, but \hop's absolute OOD accuracy (\OodemHOneHoppoOodTest) stays far below B1 (\OodemBOneSftOodTest), and we did not test the gap difference for significance, so H3 remains inconclusive.
 \else
-The OOD evaluation on held-out table clusters (a within-HybridQA split, not a cross-dataset test) is reported in Table~\ref{tab:ood} once every final run has been evaluated; H3 is not assessed in this version.
+The OOD evaluation on held-out table clusters is reported in Table~\ref{tab:ood} once every final run has been evaluated; H3 is not assessed in this version.
 \fi
 
 

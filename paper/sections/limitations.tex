@@ -21,4 +21,4 @@ Candidate generation caps accuracy: the gold first entity is not always among th
 
 \paragraph{Claims.}
 Hypotheses whose status in the claims ledger is not ``supported'' are reported as such.
-Unsupported or inconclusive hypotheses: H1 (less error propagation than trace-level RL) is inconclusive because the EM difference to answer-only GRPO has an interval that includes zero; H1c (the dense reward matters) is not supported, since the terminal-only variant is more accurate; H2 is only partially supported because strict validity is low; H3 (OOD robustness) is reported only when the held-out-cluster evaluation is complete.
+Unsupported or inconclusive hypotheses: H1 is not supported (\hop\ is not more accurate than answer-only GRPO, and seeds disagree in sign); H1c is not supported (the terminal-only variant is not less accurate, and seed variance is large); H2 is only partially supported because strict validity is low; H3 is inconclusive because the smaller relative OOD gap was not tested for significance and absolute OOD accuracy is low. With three seeds, seed-to-seed variance of the RL methods is large (up to about 6 EM points), which limits every RL comparison.

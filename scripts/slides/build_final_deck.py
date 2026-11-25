@@ -36,6 +36,7 @@ TITLE_FONT, BODY, BODY_B, MATH = "Montserrat Ultra-Bold", "Poppins", "Poppins Bo
 SHADOW = ('<a:effectLst xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"><a:outerShdw blurRad="190500" '
           'dist="38100" dir="5400000" algn="t" rotWithShape="0"><a:srgbClr val="000000"><a:alpha val="22000"/>'
           '</a:srgbClr></a:outerShdw></a:effectLst>')
+DIGITS = ["Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine"]
 NAMES = {"m0": "M0 oracle path", "b1_sft": "B1 SFT", "b2a_grpo": "B2a GRPO", "b2b_grpo_path": "B2b GRPO + path",
          "b3_soft": "B3 soft region", "h1_hoppo": "H1 Hop-PPO (ours)", "a1_terminal": "A1 terminal only",
          "a2_noredund": "A2 no redundancy", "a3_noschema": "A3 no schema", "a4_unrestricted": "A4 unrestricted"}
@@ -60,6 +61,8 @@ def ci(s: str) -> tuple[float, float] | None:
 class Results:
     def __init__(self) -> None:
         self.main, self.abl, self.ood, self.paired = (read_csv(n) for n in ("main", "ablations", "ood", "paired"))
+        mf = RES / "tables" / "macros.tex"
+        self.macros = dict(re.findall(r"\\newcommand\{\\(\w+)\}\{([^}]*)\}", mf.read_text())) if mf.exists() else {}
         mains = ["b1_sft", "b2a_grpo", "b2b_grpo_path", "b3_soft", "h1_hoppo"]
         have = {r["method"] for r in self.main if r["split"] == "test"}
         self.split = "test" if all(m in have for m in mains) else "dev"
@@ -76,9 +79,15 @@ class Results:
         return self.by[m][key] if m in self.by else "n/a"
 
     def pair(self, other: str, split: str | None = None) -> dict | None:
+        sp = split or self.split
         for r in self.paired:
-            if r["split"] == (split or self.split) and r["comparison"] == f"h1_hoppo - {other}":
-                return {"diff": num(r["diff EM"]), "ci": ci(r["95% CI"]), "p": num(r["p"])}
+            if r["split"] == sp and r["comparison"] == f"h1_hoppo - {other}":
+                key = "".join(p.title().replace("_", "") for p in ("seedagree", other, sp))
+                key = "".join(DIGITS[int(c)] if c.isdigit() else c for c in key if c.isalnum())
+                agree = self.macros.get(key)  # "yes"/"no"; None when fewer than 2 seeds
+                sd = self.macros.get(key.replace("Seedagree", "Seeddiff"), "")
+                return {"diff": num(r["diff EM"]), "ci": ci(r["95% CI"]), "p": num(r["p"]),
+                        "agree": agree != "no", "seeds": sd}
         return None
 
     @property
@@ -343,8 +352,8 @@ def build(out: Path, script_out: Path | None = None) -> None:
     def pts(p):  # "+1.3 points [−0.9, +3.5]"
         return "n/a" if not p or p["ci"] is None else f"{signed(p['diff'])} points [{signed(p['ci'][0])}, {signed(p['ci'][1])}]"
 
-    def reliable(p):
-        return bool(p and p["ci"] and (p["ci"][0] > 0 or p["ci"][1] < 0))
+    def reliable(p):  # claim rule: 95% CI excludes 0 AND every seed has the same sign
+        return bool(p and p["ci"] and (p["ci"][0] > 0 or p["ci"][1] < 0) and p.get("agree", True))
 
     # 1 title -----------------------------------------------------------------------------------
     s = D.slide("white", number=False)
@@ -660,11 +669,12 @@ def build(out: Path, script_out: Path | None = None) -> None:
     elif reliable(pa1):
         a1_txt = f"The step rewards help: ours minus 'answer reward only' = {pts(pa1)}."
     else:
-        a1_txt = f"Step rewards make no reliable difference to accuracy: {pts(pa1)}."
+        a1_txt = (f"Step rewards do not reliably help: ours minus 'answer reward only' = {pts(pa1)}"
+                  + (f"; seeds disagree ({pa1['seeds']})." if pa1 and pa1.get("seeds") else "."))
     D.text(s, 10.9, 6.85, 8.0, 3.4, [a1_txt,
-                                    "Why: with step rewards the model stops after ~2 hops; without them it uses all 4 "
-                                    "and gives the answer model more evidence.",
-                                    "So step rewards make paths shorter and tidier, not answers more correct."],
+                                    "Seeds that learn to stop after ~2 hops read less evidence and answer fewer "
+                                    "questions; seeds that use all 4 hops answer more.",
+                                    "So step rewards mainly make paths shorter, not answers more correct."],
            18, BODY, RED, bullets=True, space_after=8)
     say(s, "Which reward parts matter?", 1.5, "Dhruv",
         "This is the key test of our idea. Each bar is our model with one part removed. The second bar keeps only the "
@@ -714,14 +724,14 @@ def build(out: Path, script_out: Path | None = None) -> None:
     em_h1, em_b1 = R.em("h1_hoppo"), R.em("b1_sft")
     f1 = (f"Reading the whole table (SFT) is still best at our scale: {pct(em_b1)}% vs {pct(em_h1)}% for our "
           "method; all hop-based methods are far below the oracle" + (f" ({pct(R.m0['em'])}%)." if R.m0 else "."))
-    f2 = (f"Our method vs answer-only RL: {pts(pb2a)}, {'a reliable' if reliable(pb2a) else 'no reliable'} "
-          f"difference; vs answer+path RL: {pts(pb2b)}.")
+    f2 = (f"Step rewards beat the same path signal given only at the end (answer+path RL): {pts(pb2b)}"
+          f"{', on every seed' if reliable(pb2b) else ''}; but not answer-only RL ({pts(pb2a)}).")
     if reliable(pa1) and pa1["diff"] < 0:
         f3 = "Step rewards make paths shorter and more on-path, but did not give more correct answers."
     elif reliable(pa1):
         f3 = "Step rewards give more correct answers than the answer-only reward."
     else:
-        f3 = "Step rewards change how the model hops, but make no reliable difference to accuracy."
+        f3 = "Step rewards mainly make paths shorter; accuracy tracks how much evidence the model reads."
     f4 = "Most errors start at the first hop: a better first step is the lever, not more reward shaping."
     # left: native bar chart of exact match (editable in PowerPoint)
     D.card(s, 1.12, 2.9, 9.0, 7.15)
@@ -771,7 +781,7 @@ def build(out: Path, script_out: Path | None = None) -> None:
            14, color=BLACK)
     # right: four short findings
     short = ["Reading the whole table (SFT) is still best at our scale.",
-             f"Ours vs answer-only RL: {pts(pb2a)}, {'reliable' if reliable(pb2a) else 'not reliable'}.",
+             f"Step rewards beat end-of-trace path rewards ({pts(pb2b)}); not better than answer-only RL.",
              f3, "Most errors start at the first hop: improve the first step next."]
     for i, t in enumerate(short):
         D.numbered(s, 10.75, 2.95 + i * 1.55, i + 1, 8.2, t, 19)

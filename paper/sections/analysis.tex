@@ -4,7 +4,7 @@
 \begin{figure}[t]
 \centering
 \figfile{F9_error_taxonomy}{width=\columnwidth}
-\caption{Error taxonomy on the development split: wrong first hop, wrong later hop, right path but wrong answer, answer-head error and candidate-recall failure, as fractions of questions, for each path-based method.}
+\caption{Error taxonomy on the test split (pooled over seeds): wrong first hop, wrong later hop, right path but wrong answer, answer-head error and candidate-recall failure, as fractions of questions, for each path-based method.}
 \label{fig:errors}
 \end{figure}
 
@@ -12,7 +12,7 @@
 For every path-based method the dominant error is a wrong first hop (Figure~\ref{fig:errors}). Candidate recall bounds first-hop accuracy: the first gold entity is among the 32 hop-0 candidates for \RecallKDev\% of development questions, and the gold anchor is lexical (Appendix~\ref{app:changes}), so the first choice relies mainly on word overlap with the question. Errors with a correct path but a wrong answer are rare except for B2b, whose terminal path bonus keeps it on the gold path more often at the end of the trace.
 
 \paragraph{Reward hacking.}
-We log reward components, the unique-entity ratio and the stop-at-first-hop rate at every update. An early version paid the hop reward again when the policy revisited a gold cell, which made looping profitable; we fixed this before any reported run and added a regression test (Appendix~\ref{app:changes}). In the reported \hop\ run the hop reward and the training answer F1 rise together, the share of episodes that stop after one hop stays below 1\% at the end of training (at most 6\% in any update), and the unique-entity ratio rises to about 0.99 (Figure~\ref{fig:reward}).
+We log reward components, the unique-entity ratio and the stop-at-first-hop rate at every update. An early version paid the hop reward again when the policy revisited a gold cell, which made looping profitable; we fixed this before any reported run and added a regression test (Appendix~\ref{app:changes}). In the seed-0 \hop\ run the hop reward and the training answer F1 rise together, the share of episodes that stop after one hop stays below 1\% at the end of training (at most 6\% in any update), and the unique-entity ratio rises to about 0.99 (Figure~\ref{fig:reward}).
 
 \paragraph{Example.}
 Figure~\ref{fig:pipeline} shows a development question answered correctly by \hop\ in two hops (the gymnast's cell, then his linked passage) where B1 answers incorrectly; an interactive demo shows the hop-by-hop probabilities and evidence for any development question, including failure cases.

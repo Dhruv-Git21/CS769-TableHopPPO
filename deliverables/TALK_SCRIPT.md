@@ -1,6 +1,6 @@
 # Talking script: TableHop-PPO final presentation
 
-Generated with the deck by `scripts/slides/build_final_deck.py`; numbers come from `results/tables` (dev split, 1 seed).
+Generated with the deck by `scripts/slides/build_final_deck.py`; numbers come from `results/tables` (test split, 3 seeds).
 Planned speaking time: about 14.8 minutes for 15 slides (limit 15 min), then questions.
 Backup slides (time 0) are only shown if a question needs them.
 
@@ -76,7 +76,7 @@ We compare against four kinds of methods. The oracle gives the answer model the 
 ## Slide 10: Main results
 *Shaurya · about 1.5 min*
 
-This is the main result, measured as exact match on dev questions. Full-table reader (SFT) gets 26.3 percent; Answer-only RL gets 10.1 percent; Answer+path RL gets 7.4 percent; Soft selection gets 13.9 percent; Hop-PPO (ours) gets 11.4 percent; the oracle gets 60.3 percent, which is the ceiling of the answer model. The full-table reader is clearly the strongest. Compared with the answer-only RL method our method differs by +1.3 points [-0.9, +3.5], which is not a reliable difference. Compared with the answer+path RL method it differs by +4.0 points [+2.0, +6.1]. The table on the right also shows path validity: how often the hops were on the correct path.
+This is the main result, measured as exact match on test questions. Full-table reader (SFT) gets 27.0 percent; Answer-only RL gets 11.5 percent; Answer+path RL gets 6.9 percent; Soft selection gets 11.3 percent; Hop-PPO (ours) gets 9.5 percent; the oracle gets 57.2 percent, which is the ceiling of the answer model. The full-table reader is clearly the strongest. Compared with the answer-only RL method our method differs by -2.0 points [-2.8, -1.2], which is not a reliable difference. Compared with the answer+path RL method it differs by +2.6 points [+1.6, +3.6]. The table on the right also shows path validity: how often the hops were on the correct path.
 
 ## Slide 11: Learning during training
 *Dhruv · about 0.75 min*
@@ -86,7 +86,7 @@ Left: accuracy on dev questions during training for each method. Right: what our
 ## Slide 12: Which reward parts matter?
 *Dhruv · about 1.5 min*
 
-This is the key test of our idea. Each bar is our model with one part removed. The second bar keeps only the final-answer reward, no step rewards. Dropping the step rewards (answer reward only) gives MORE correct answers: ours minus it = -8.9 points [-11.3, -6.5]. The reason is in the hops column: with step rewards the model learns to stop after about two hops, the length of the correct path, while without them it keeps going to four hops and hands the answer model more evidence. So step rewards make the paths shorter and tidier, but did not make the answers more correct. We report this honestly as a negative result. Removing the repeat penalty, the type check, or the move limits changes less.
+This is the key test of our idea. Each bar is our model with one part removed. The second bar keeps only the final-answer reward, no step rewards. Step rewards do not reliably help: ours minus 'answer reward only' = -2.3 points [-3.2, -1.5]; seeds disagree (-9.7, -0.1, +2.8). The reason is in the hops column: with step rewards the model learns to stop after about two hops, the length of the correct path, while without them it keeps going to four hops and hands the answer model more evidence. So step rewards make the paths shorter and tidier, but did not make the answers more correct. We report this honestly as a negative result. Removing the repeat penalty, the type check, or the move limits changes less.
 
 ## Slide 13: Where it goes wrong
 *Shaurya · about 1 min*
@@ -101,7 +101,7 @@ Now the live demo. (Open http://127.0.0.1:8769; full click-by-click guide in doc
 ## Slide 15: Key findings
 *Dhruv · about 1 min*
 
-To sum up, four findings. One: Reading the whole table (SFT) is still best at our scale: 26.3% vs 11.4% for our method; all hop-based methods are far below the oracle (60.3%). Two: Our method vs answer-only RL: +1.3 points [-0.9, +3.5], no reliable difference; vs answer+path RL: +4.0 points [+2.0, +6.1]. Three: Step rewards make paths shorter and more on-path, but did not give more correct answers. Four: Most errors start at the first hop: a better first step is the lever, not more reward shaping. Next we would build a better first-hop finder and try a larger answer model. Thank you, we are happy to take questions.
+To sum up, four findings. One: Reading the whole table (SFT) is still best at our scale: 27.0% vs 9.5% for our method; all hop-based methods are far below the oracle (57.2%). Two: Step rewards beat the same path signal given only at the end (answer+path RL): +2.6 points [+1.6, +3.6], on every seed; but not answer-only RL (-2.0 points [-2.8, -1.2]). Three: Step rewards mainly make paths shorter; accuracy tracks how much evidence the model reads. Four: Most errors start at the first hop: a better first step is the lever, not more reward shaping. Next we would build a better first-hop finder and try a larger answer model. Thank you, we are happy to take questions.
 
 ## Slide 16: References
 *— · about 0 min*

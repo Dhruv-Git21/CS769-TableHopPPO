@@ -82,6 +82,14 @@ def aggregate_method(runs: list[dict], split: str) -> dict | None:
     return row
 
 
+def seed_diffs(ref_runs: list[dict], runs: list[dict], split: str) -> list[float]:
+    """EM(ref seed k) - EM(method seed k) for seeds present in both."""
+    a = {r["seed"]: r["metrics"][split]["em"] for r in ref_runs if split in r["metrics"]}
+    b = {r["seed"]: r["metrics"][split]["em"] for r in runs if split in r["metrics"]}
+    common = sorted(set(a) & set(b))
+    return [a[k] - b[k] for k in common] if len(common) > 1 else []
+
+
 def fmt(ms, nd=3) -> str:
     return "n/a" if ms is None else f"{ms[0]:.{nd}f}±{ms[1]:.{nd}f}"
 
@@ -165,6 +173,11 @@ def main() -> None:
                 macros.append((macro_name("diff", m, s), f"{100 * pb['diff']:+.1f}"))
                 macros.append((macro_name("difflo", m, s), f"{100 * pb['lo']:+.1f}"))
                 macros.append((macro_name("diffhi", m, s), f"{100 * pb['hi']:+.1f}"))
+                # per-seed EM differences (same seed index), used for the "all seeds agree" claim rule
+                sd = seed_diffs(by[a.ref], by[m], s)
+                if sd:
+                    macros.append((macro_name("seeddiff", m, s), ", ".join(f"{100 * d:+.1f}" for d in sd)))
+                    macros.append((macro_name("seedagree", m, s), "yes" if all(d > 0 for d in sd) or all(d < 0 for d in sd) else "no"))
     for m in labels:
         for i_s, o_s in (("dev", "ood_dev"), ("test", "ood_test")):
             gi, go = agg[(m, i_s)], agg[(m, o_s)]
@@ -173,6 +186,8 @@ def main() -> None:
                 ood_rows.append([f"{i_s}->{o_s}", m, f"{gi['em'][0]:.3f}", f"{go['em'][0]:.3f}",
                                  f"{d:+.3f}", f"{100 * rel:.1f}%"])
                 macros.append((macro_name("gap", m, o_s), f"{100 * d:.1f}"))
+                macros.append((macro_name("gaprel", m, o_s), f"{100 * rel:.1f}"))
+                macros.append((macro_name("oodem", m, o_s), f"{100 * go['em'][0]:.1f}"))
     if ood_rows:
         print("\n== ID -> OOD gap (EM) ==")
         for r in ood_rows:
@@ -181,7 +196,15 @@ def main() -> None:
     write_table(tab / "ablations", hdr, abl_rows)
     write_table(tab / "ood", ["pair", "method", "EM ID", "EM OOD", "gap abs", "gap rel"], ood_rows)
     write_table(tab / "paired", ["split", "comparison", "n questions", "diff EM", "95% CI", "p"], paired_rows)
+    # main-text versions: only the headline split (test if evaluated, else dev), without the split column
+    head = "test" if any(r[0] == "test" for r in main_rows) else "dev"
+    for name, rows_, h in (("main_head", main_rows, hdr), ("ablations_head", abl_rows, hdr),
+                           ("paired_head", paired_rows, ["split", "comparison", "n questions", "diff EM", "95% CI", "p"])):
+        write_table(tab / name, h[1:], [r[1:] for r in rows_ if r[0] == head])
     macros += extra_macros_and_tables(rd, tab)
+    macros = list(dict(reversed(macros)).items())[::-1]  # one definition per name (first wins)
+    seen_m: set[str] = set()
+    macros = [kv for kv in macros if not (kv[0] in seen_m or seen_m.add(kv[0]))]
     (tab / "macros.tex").write_text("".join(f"\\newcommand{{\\{k}}}{{{v}}}\n" for k, v in macros))
     print(f"\nwrote tables to {tab}")
 

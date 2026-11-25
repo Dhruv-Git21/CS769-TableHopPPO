@@ -1,0 +1,17 @@
+{
+  "em": 0.23374340949033393,
+  "f1": 0.30326785049725197,
+  "path_validity_strict": null,
+  "path_validity_loose": null,
+  "gold_f1": null,
+  "gold_lcs": null,
+  "hop_efficiency": null,
+  "mean_hops": null,
+  "n": 569,
+  "n_with_gold_path": null,
+  "run_id": "b1_sft_hybridqa_s1_20261125-024038",
+  "method": "b1_sft",
+  "split": "ood_test",
+  "eval_time_s": 19.112478971481323,
+  "env_lock_sha256": "e978ef9ce1492347b3b64a2abaa80ba39a38963485e4d81290f321d863eb77e0"
+}

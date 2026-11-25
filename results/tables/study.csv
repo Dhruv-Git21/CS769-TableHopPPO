@@ -1,11 +1,16 @@
 method,trial,setting,dev EM,chosen
 b1_sft,t0,default,26.3,
+b1_sft,t1,sft.lr=1.0e-4,28.4,yes
+b1_sft,t2,sft.lr=1.0e-3,23.0,
 b2a_grpo,t0,default,10.1,
 b2a_grpo,t1,ppo.lr_head=1.0e-3,10.5,
-b2a_grpo,t2,ppo.entropy_coef=0.03,11.7,
-b2b_grpo_path,t0,default,7.4,
+b2a_grpo,t2,ppo.entropy_coef=0.03,11.7,yes
+b2b_grpo_path,t0,default,7.4,yes
 b2b_grpo_path,t1,ppo.lr_head=1.0e-3,7.0,
-b3_soft,t0,default,13.9,
-h1_hoppo,t0,default,11.4,
+b2b_grpo_path,t2,ppo.entropy_coef=0.03,6.8,
+b3_soft,t0,default,13.9,yes
+b3_soft,t1,soft.lr=3.0e-4,13.1,
+b3_soft,t2,soft.lr=3.0e-3,12.8,
+h1_hoppo,t0,default,11.4,yes
 h1_hoppo,t1,ppo.lr_head=1.0e-3,8.1,
 h1_hoppo,t2,ppo.entropy_coef=0.03,9.9,

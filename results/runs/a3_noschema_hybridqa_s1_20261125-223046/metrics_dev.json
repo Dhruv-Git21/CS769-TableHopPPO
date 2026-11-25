@@ -1,0 +1,35 @@
+{
+  "em": 0.103,
+  "f1": 0.14437977928504245,
+  "path_validity_strict": 0.199055330634278,
+  "path_validity_loose": 1.0,
+  "gold_f1": 0.15340755735492578,
+  "gold_lcs": 0.13630229419703102,
+  "hop_efficiency": 0.09058704453441295,
+  "mean_hops": 1.959,
+  "n": 1000,
+  "n_with_gold_path": 988,
+  "run_id": "a3_noschema_hybridqa_s1_20261125-223046",
+  "method": "a3_noschema",
+  "split": "dev",
+  "eval_time_s": 27.93620991706848,
+  "env_lock_sha256": "e978ef9ce1492347b3b64a2abaa80ba39a38963485e4d81290f321d863eb77e0",
+  "answer_head_sha256": "b1fad48ceb67e7624f11eb610b90b4af71588e392517c6c5d4967966939c15a4",
+  "hop_validity_by_index": {
+    "0": 0.2742914979757085,
+    "1": 0.08023952095808383,
+    "2": 0.017699115044247787
+  },
+  "hop_count_by_index": {
+    "0": 988,
+    "1": 835,
+    "2": 113
+  },
+  "reward_components_mean": {
+    "hop": 0.068,
+    "red": 0.0,
+    "schema": 0.0,
+    "step": -0.03918,
+    "terminal": 0.14437977928504245
+  }
+}

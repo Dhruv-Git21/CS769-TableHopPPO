@@ -157,8 +157,8 @@ def build(out: Path) -> None:
              cap_color=RED)
     D.figure(s, FIG / "F2_main.png", 13.5, 2.9, 5.4, 3.6, "Exact match per main method.", cap_color=RED)
     D.text(s, 13.5, 7.2, 5.4, 2.8, [f"SFT best: {pct(R.em('b1_sft'))}% vs ours {pct(R.em('h1_hoppo'))}%.",
-                                    f"Ours vs answer+path RL: {pts(pb2b)}.",
-                                    f"Ours vs answer-only RL: {pts(pb2a)}."],
+                                    f"Ours vs answer+path RL: {pts(pb2b)} (every seed).",
+                                    f"Ours vs answer-only RL: {pts(pb2a)} (seeds disagree)."],
            16, BODY, RED, bullets=True, space_after=6)
     D.text(s, 1.12, 9.15, 11.9, 1.0, f"Oracle (correct evidence given): {pct(R.m0['em']) if R.m0 else 'n/a'}% — the "
                                      "reader is not the bottleneck; choosing evidence is.", 17, BODY_B, RED)
@@ -208,12 +208,12 @@ def build(out: Path) -> None:
     va.minimum_scale, va.maximum_scale = 0, max(vals) * 1.25
     D.text(s, 1.4, 9.35, 8.5, 0.6, "Red = ours; light orange = ours without step rewards; grey = oracle ceiling.",
            14, color=BLACK)
-    a1_bad = pa1 and pa1["ci"] and pa1["ci"][1] < 0
+    a1_bad = pa1 and pa1["ci"] and pa1["ci"][1] < 0 and pa1.get("agree", True)
     findings = ["Reading the whole table (SFT) is still best at our laptop scale.",
                 f"Step rewards beat end-of-trace path rewards ({pts(pb2b)}) and give the most valid paths.",
                 ("But dropping step rewards gives more correct answers: shorter paths, less evidence."
-                 if a1_bad else "Step rewards make no reliable difference vs answer-only reward."),
-                "Most errors start at the first hop: improve the first step next."]
+                 if a1_bad else "Not better than answer-only RL; step rewards mainly shorten paths."),
+                "Accuracy tracks how much evidence is read; most errors start at the first hop."]
     for i, t in enumerate(findings):
         D.numbered(s, 10.75, 2.95 + i * 1.6, i + 1, 8.2, t, 19)
     D.notes(s, "Four findings. One, reading the whole table is still best at our scale. Two, rewarding each hop beats "

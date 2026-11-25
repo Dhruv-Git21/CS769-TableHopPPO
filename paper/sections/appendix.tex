@@ -132,6 +132,24 @@ Table~\ref{tab:datastats} gives per-split statistics; first-gold-entity recall o
 \caption{ID versus OOD EM per method with gap.}
 \end{figure}}{}
 
+\section{Results on All Splits}
+\label{app:allsplits}
+\begin{table*}[h]
+\centering\small
+\resizebox{\textwidth}{!}{\input{../results/tables/main.tex}}
+\caption{All methods on every evaluated split (dev, test, OOD dev, OOD test); columns as in Table~\ref{tab:main}.}
+\end{table*}
+\begin{table*}[h]
+\centering\small
+\resizebox{\textwidth}{!}{\input{../results/tables/ablations.tex}}
+\caption{Ablations on every evaluated split.}
+\end{table*}
+\begin{table}[h]
+\centering\small
+\resizebox{\columnwidth}{!}{\input{../results/tables/paired.tex}}
+\caption{Paired bootstrap differences (H1 minus each method) on every evaluated split.}
+\end{table}
+
 \section{Reproducibility}
 \label{app:repro}
 

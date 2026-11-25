@@ -1,1 +1,21 @@
 pair,method,EM ID,EM OOD,gap abs,gap rel
+dev->ood_dev,m0,0.603,0.590,+0.013,2.2%
+test->ood_test,m0,0.572,0.531,+0.041,7.2%
+dev->ood_dev,b1_sft,0.291,0.291,+0.000,0.0%
+test->ood_test,b1_sft,0.270,0.231,+0.039,14.6%
+dev->ood_dev,b2a_grpo,0.131,0.106,+0.025,19.1%
+test->ood_test,b2a_grpo,0.115,0.098,+0.017,14.9%
+dev->ood_dev,b2b_grpo_path,0.071,0.070,+0.001,1.9%
+test->ood_test,b2b_grpo_path,0.069,0.064,+0.005,7.2%
+dev->ood_dev,b3_soft,0.131,0.115,+0.015,11.7%
+test->ood_test,b3_soft,0.113,0.096,+0.017,14.9%
+dev->ood_dev,h1_hoppo,0.102,0.090,+0.012,11.5%
+test->ood_test,h1_hoppo,0.095,0.090,+0.006,5.8%
+dev->ood_dev,a1_terminal,0.134,0.108,+0.026,19.2%
+test->ood_test,a1_terminal,0.119,0.099,+0.019,16.5%
+dev->ood_dev,a2_noredund,0.155,0.139,+0.017,10.7%
+test->ood_test,a2_noredund,0.148,0.118,+0.030,20.2%
+dev->ood_dev,a3_noschema,0.106,0.084,+0.022,20.5%
+test->ood_test,a3_noschema,0.091,0.074,+0.017,19.0%
+dev->ood_dev,a4_unrestricted,0.102,0.086,+0.016,16.0%
+test->ood_test,a4_unrestricted,0.086,0.084,+0.001,1.4%
